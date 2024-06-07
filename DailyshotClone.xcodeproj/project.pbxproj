@@ -14,6 +14,7 @@
 		BE75507A2C12CF2900854C4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE7550792C12CF2900854C4D /* Assets.xcassets */; };
 		BE75507D2C12CF2900854C4D /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE75507C2C12CF2900854C4D /* Base */; };
 		BE7550892C12D3D600854C4D /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7550882C12D3D600854C4D /* HomeViewController.swift */; };
+		BE75508B2C12D6B800854C4D /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75508A2C12D6B800854C4D /* HomeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		BE75507C2C12CF2900854C4D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BE75507E2C12CF2900854C4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BE7550882C12D3D600854C4D /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = ../../../DailyshotClone/DailyshotClone/ViewControllers/HomeViewController.swift; sourceTree = "<group>"; };
+		BE75508A2C12D6B800854C4D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		FB98158FB027096DD170998A /* Pods-DailyshotClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DailyshotClone.release.xcconfig"; path = "Target Support Files/Pods-DailyshotClone/Pods-DailyshotClone.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,6 +100,7 @@
 		BE7550852C12CFC100854C4D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				BE75508A2C12D6B800854C4D /* HomeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				BE7550712C12CF2800854C4D /* AppDelegate.swift in Sources */,
 				BE7550732C12CF2800854C4D /* SceneDelegate.swift in Sources */,
 				BE7550892C12D3D600854C4D /* HomeViewController.swift in Sources */,
+				BE75508B2C12D6B800854C4D /* HomeViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
