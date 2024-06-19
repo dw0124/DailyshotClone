@@ -26,9 +26,9 @@ extension NumberFormatter {
     }
 }
     
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, ViewModelBindableType {
     
-    let viewModel = HomeViewModel()
+    var viewModel: HomeViewModel!
     
     var disposeBag = DisposeBag()
     
@@ -39,13 +39,13 @@ class HomeViewController: UIViewController {
         
         
         setup()
-        binding()
+        //bind()
 
     }
 }
 
 extension HomeViewController {
-    private func binding() {
+    func bindViewModel() {
 
         let dataSource = RxTableViewSectionedReloadDataSource<SectionModel>(
             configureCell: { dataSource, tableView, indexPath, item in
