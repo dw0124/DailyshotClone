@@ -1,5 +1,9 @@
 PODS:
+  - Cosmos (25.0.1)
   - Differentiator (5.0.0)
+  - NMapsGeometry (1.0.1)
+  - NMapsMap (3.17.0):
+    - NMapsGeometry
   - "NSObject+Rx (5.2.2)":
     - RxSwift (~> 6.2)
   - RxCocoa (6.6.0):
@@ -15,6 +19,8 @@ PODS:
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
+  - Cosmos
+  - NMapsMap
   - "NSObject+Rx"
   - RxCocoa
   - RxDataSources
@@ -23,7 +29,10 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Cosmos
     - Differentiator
+    - NMapsGeometry
+    - NMapsMap
     - "NSObject+Rx"
     - RxCocoa
     - RxDataSources
@@ -32,7 +41,10 @@ SPEC REPOS:
     - SnapKit
 
 SPEC CHECKSUMS:
+  Cosmos: 02db0a1c953107049bfd2d7af19ceef55ecb7e98
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
+  NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
+  NMapsMap: a5b909a31b6f3d27a670f6eb2ddc913c38975474
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
   RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
@@ -40,6 +52,6 @@ SPEC CHECKSUMS:
   RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: 13991a78ff14c9133b39ab6d326f0998e9d57ea5
+PODFILE CHECKSUM: 2f5bb79e10f168ed4eeee8bf19d0f2d36ef5f5c5
 
 COCOAPODS: 1.12.1

@@ -13,18 +13,6 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import RxDataSources
-
-extension NumberFormatter {
-    static func setDecimal(_ num: Int) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        
-        let price = num
-        let result = numberFormatter.string(for: price)!
-        
-        return result
-    }
-}
     
 class HomeViewController: UIViewController, ViewModelBindableType {
     
@@ -32,15 +20,13 @@ class HomeViewController: UIViewController, ViewModelBindableType {
     
     var disposeBag = DisposeBag()
     
-    var tableView = UITableView()
+    var tableView = UITableView(frame: .zero, style: .grouped)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         setup()
-        //bind()
-
     }
 }
 
@@ -59,20 +45,14 @@ extension HomeViewController {
                     cell.configure(items)
                     return cell
                 case .smallItem(let items):
-                    let cell = tableView.dequeueReusableCell(withIdentifier: SmallItemCell.identifier, for: indexPath) as! SmallItemCell
-                    cell.configure(items)
-                    return cell
+                    return self.configureCell(tableView: tableView, indexPath: indexPath, items: items, cellType: SmallItemCell.self)
                 case .mediumItem(items: let items):
-                    let cell = tableView.dequeueReusableCell(withIdentifier: MediumItemCell.identifier, for: indexPath) as! MediumItemCell
-                    cell.configure(items)
-                    return cell
+                    return self.configureCell(tableView: tableView, indexPath: indexPath, items: items, cellType: MediumItemCell.self)
                 case .largeItem(items: let items):
-                    let cell = tableView.dequeueReusableCell(withIdentifier: LargeItemCell.identifier, for: indexPath) as! LargeItemCell
-                    cell.configure(items)
-                    return cell
+                    return self.configureCell(tableView: tableView, indexPath: indexPath, items: items, cellType: LargeItemCell.self)
                 }
             }, titleForHeaderInSection: { dataSource, index in
-                return " "
+                return ""
             }
         )
         
@@ -87,6 +67,7 @@ extension HomeViewController {
     
     private func setup() {
         view.backgroundColor = .white
+        navigationController?.navigationBar.backgroundColor = .clear
         
         tableView.register(BannerCell.self, forCellReuseIdentifier: BannerCell.identifier)
         tableView.register(MenuCell.self, forCellReuseIdentifier: MenuCell.identifier)
@@ -96,12 +77,34 @@ extension HomeViewController {
         tableView.register(HomeItemHeaderCell.self, forHeaderFooterViewReuseIdentifier: HomeItemHeaderCell.identifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
         
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+    func configureCell<T: HomeCellType>(tableView: UITableView, indexPath: IndexPath, items: [T.ItemType], cellType: T.Type) -> T {
+        let cell = tableView.dequeueReusableCell(withIdentifier: T.identifier, for: indexPath) as! T
+        
+        cell.configure(items)
+        
+        cell.collectionView.rx.modelSelected(T.ItemType.self)
+            .subscribe(onNext: { item in
+                let dailyshotItem = item as! DailyshotItem
+                
+                let viewModel = ItemDetailViewModel(dailyshotItem: dailyshotItem)
+                var viewController = ItemDetailViewController()
+                
+                viewController.bind(viewModel: viewModel)
+                
+                self.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: cell.disposeBag)
+        
+        return cell
     }
 }
 
@@ -114,7 +117,7 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section > 1 ? 70 : 0
+        return section > 1 ? 84 : 0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -134,6 +137,6 @@ extension HomeViewController: UITableViewDelegate {
                 .disposed(by: headerView.disposeBag)
         }
         
-        return section > 1 ? headerView : nil
+        return section > 1 ? headerView : nil 
     }
 }

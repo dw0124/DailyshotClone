@@ -13,6 +13,32 @@
     "productDescription": "아드벡의 이야기는 어떠한 역경 속에서도 살아남는 활력이 넘치는 정신으로, 의심할 여지 없이 지구상에서 가장 대단한 양조장 이야기 중 하나이다. 아드벡 우거다일은 온전히 실키한 광택을 지녔으며 세계에서 손꼽을 수 있을 정도로 몇 안되는 양조장이 꿈꾸는 복합성에 도달하였다. <위스키 바이블>의 저자 짐 머레이가 2009년, '아드벡 우거다일'을 그 해의 월드 위스키로 선정하며 극찬한 말입니다. 아드벡은 세상에 존재하는 수많은 위스키 가운데 가장 피트 향이 강하고 스모키한 싱글 몰트 위스키로서 '궁극의 아일라 몰트 위스키'라는 자부심을 지니고 있습니다. 아일라 몰트 위스키 중 피트향과 스모크향이 가장 강하고 복잡성이 가장 두드러지는 위스키라는 평가를 받고 있습니다. 강렬한 스모크 향에도 불구하고 매력적이고 달콤한 풍미가 돋보이는 위스키로 유명하며, '피트 향의 역설(The Peaty Paradox)'이라는 애칭이 붙었습니다. 위스키 평론가인 마이클 잭슨의 평가에서 92점을 받은 Wood Finish 제품으로, 위스키 애호가들이 열광하는 아드벡 시리즈 중 하나 입니다."
   },
   {
+      "itemCategory": "beer",
+      "name": "크래프트 맥주",
+      "price": 5000,
+      "discountRate": 10,
+      "rating": 4.5,
+      "reviewCount": 120,
+      "specialOffer": true,
+      "recommended": true,
+      "thumnailImageURL": "https://example.com/beer_thumbnail.jpg",
+      "productImageURL": "https://example.com/beer_image.jpg",
+      "detailImageURL": "https://example.com/beer_detail.jpg",
+      "tastingNotes": {
+          "aroma": "과일향과 감귤 향",
+          "taste": "상쾌하고 청량함",
+          "finish": "부드러운 미감과 약간의 쓴맛"
+      },
+      "information": {
+          "type": "IPA",
+          "volume": 500,
+          "alcoholByVolume": 5.5,
+          "countryOfOrigin": "미국",
+          "packaging": "없음"
+      },
+      "productDescription": "과일향과 청량한 맛이 어우러진 인기 크래프트 맥주입니다."
+  },
+  {
     "itemCategory": "whisky",
     "name": "글렌피딕 12년",
     "price": 80000,

@@ -21,9 +21,10 @@ enum ItemCategory: String, Codable {
 struct DailyshotItem: Codable {
     let itemCategory: ItemCategory  // 상품 카테고리
     let name: String        // 상품명
-    let price: Int       // 가격
+    let price: Int          // 가격
     let discountRate: Int?  // 할인률
     let rating: Double?     // 평점
+    let reviewCount: Int?   // 리뷰 수
     
     let specialOffer: Bool  // 특가 표시
     let recommended: Bool   // 추천 표시
@@ -32,5 +33,22 @@ struct DailyshotItem: Codable {
     let productImageURL: String     // 상품 이미지
     let detailImageURL: String      // 상품 상세 이미지
     
-    let productDescription: String
+    let tastingNotes: TastingNotes?
+    let information: Information?
+    
+    let productDescription: String  // 상품 설명
+}
+
+struct TastingNotes: Codable {
+    let aroma: String
+    let taste: String
+    let finish: String
+}
+
+struct Information: Codable {
+    var type: String            // 종류
+    var volume: Int          // 용량 (ml)
+    var alcoholByVolume: Double // 도수 (%)
+    var countryOfOrigin: String // 국가
+    var packaging: String       // 케이스
 }

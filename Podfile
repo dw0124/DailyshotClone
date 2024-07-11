@@ -11,7 +11,8 @@ target 'DailyshotClone' do
   pod 'RxCocoa'
   pod 'NSObject+Rx'
   pod 'RxDataSources'
-
+  pod 'NMapsMap'
+  pod 'Cosmos'
 end
 
 post_install do |installer|

@@ -34,11 +34,11 @@ enum SectionItem {
         case .menu:
             return UIScreen.main.bounds.width * 0.5
         case .smallItem:
-            return UIScreen.main.bounds.width * 0.85
+            return UIScreen.main.bounds.width * 0.78
         case .mediumItem:
             return UIScreen.main.bounds.width * 0.75
         case .largeItem:
-            return UIScreen.main.bounds.width * 1.0
+            return UIScreen.main.bounds.width * 0.85
         }
     }
 }
