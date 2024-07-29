@@ -32,6 +32,16 @@ class BannerCell: UITableViewCell {
         return collectionView
     }()
     
+    
+    lazy var bannerIndexButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.layer.cornerRadius = 12
+        button.layer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.8).cgColor
+        button.tintColor = .white
+        button.addPadding(top: 4, leading: 6, bottom: 4, trailing: 6)
+        return button
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -48,6 +58,10 @@ class BannerCell: UITableViewCell {
         backgroundColor = #colorLiteral(red: 0.9239165187, green: 0.9213962555, blue: 0.9468390346, alpha: 1)
         contentView.backgroundColor = .white
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
+        
+        
+        collectionView.setContentOffset(
+            .init(x: UIScreen.main.bounds.width, y: collectionView.contentOffset.y), animated: false)
     }
     
     override func prepareForReuse() {
@@ -62,25 +76,33 @@ class BannerCell: UITableViewCell {
         selectionStyle = .none
         
         contentView.addSubview(collectionView)
+        contentView.addSubview(bannerIndexButton)
         
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.prefetchDataSource = self
         
-//        collectionView.snp.makeConstraints {
-//            $0.width.equalToSuperview().priority(.high)
-//            $0.height.equalTo(collectionView.snp.width)
-//            $0.centerX.equalToSuperview()
-//        }
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        bannerIndexButton.snp.makeConstraints {
+            $0.trailing.bottom.equalTo(collectionView).inset(10)
         }
     }
     
     
     // configure
     func configure(_ bannerImages: [UIImage]) {
-        self.bannerImages = bannerImages
+        var images: [UIImage] = []
+        images = bannerImages
+        
+        images.insert(images[images.count - 1], at: 0)
+        images.append(images[1])
+        
+        self.bannerImages = images
+            
+        bannerIndexButton.setTitle("1 / \(images.count - 2) | 전체보기", for: .normal)
         
         collectionView.reloadData()
     }
@@ -116,19 +138,23 @@ extension BannerCell: UICollectionViewDelegate {
     
 }
 
-//// MARK: - UIScrollViewDelegate / pageControl 관련
+// MARK: - UIScrollViewDelegate / pageControl 관련
 extension BannerCell: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if scrollView == collectionView {
-            let currentPage = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
-            
-            print(currentPage)
-            //pageControl.currentPage = currentPage
+        let count = bannerImages!.count
+        
+        if scrollView.contentOffset.x == 0 {
+            scrollView.setContentOffset(.init(x: UIScreen.main.bounds.width * Double(count-2), y: scrollView.contentOffset.y), animated: false)
         }
-    }
+        if scrollView.contentOffset.x == Double(count-1) * UIScreen.main.bounds.width {
+            scrollView.setContentOffset(.init(x: UIScreen.main.bounds.width, y: scrollView.contentOffset.y), animated: false)
+        }
+        
+        let index = scrollView.contentOffset.x / UIScreen.main.bounds.width
+        print(index)
+        
+        
+        self.bannerIndexButton.setTitle("\(Int(index)) / \(self.bannerImages!.count - 2) | 전체보기", for: .normal)
     
-    @objc func pageControlValueChanged(_ sender: UIPageControl) {
-        let indexPath = IndexPath(item: sender.currentPage, section: 0)
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
 }
