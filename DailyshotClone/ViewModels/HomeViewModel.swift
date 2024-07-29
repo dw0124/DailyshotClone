@@ -18,20 +18,19 @@ class HomeViewModel {
     var sectionModels = BehaviorRelay<[SectionModel]>(value: [])
     
     init() {
-        bannerImages = [UIImage(systemName: "circle.fill")!, UIImage(systemName: "circle.fill")!,UIImage(systemName: "circle.fill")!]
+        bannerImages = [UIImage(systemName: "circle.fill")!, UIImage(systemName: "house.fill")!,UIImage(systemName: "person.fill")!]
         menuButtons = [
-            MenuButtonItem(name: "Home", buttonImage: UIImage(systemName: "house.fill")!),
-            MenuButtonItem(name: "Search", buttonImage: UIImage(systemName: "magnifyingglass")!),
-            MenuButtonItem(name: "Profile", buttonImage: UIImage(systemName: "person.fill")!),
-            MenuButtonItem(name: "Settings", buttonImage: UIImage(systemName: "gear")!),
-            MenuButtonItem(name: "Home", buttonImage: UIImage(systemName: "house.fill")!),
-            MenuButtonItem(name: "Search", buttonImage: UIImage(systemName: "magnifyingglass")!),
-            MenuButtonItem(name: "Profile", buttonImage: UIImage(systemName: "person.fill")!),
-            MenuButtonItem(name: "Settings", buttonImage: UIImage(systemName: "gear")!),
-            MenuButtonItem(name: "Home", buttonImage: UIImage(systemName: "house.fill")!),
-            MenuButtonItem(name: "Search", buttonImage: UIImage(systemName: "magnifyingglass")!),
-            MenuButtonItem(name: "Profile", buttonImage: UIImage(systemName: "person.fill")!),
-            //MenuButtonItem(name: "Settings", buttonImage: UIImage(systemName: "gear")!)
+            MenuButtonItem(name: "카테고리", buttonImage: UIImage(systemName: "house.fill")!, viewControllerType: .category),
+            MenuButtonItem(name: "Search", buttonImage: UIImage(systemName: "magnifyingglass")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Profile", buttonImage: UIImage(systemName: "person.fill")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Settings", buttonImage: UIImage(systemName: "gear")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Home", buttonImage: UIImage(systemName: "house.fill")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Search", buttonImage: UIImage(systemName: "magnifyingglass")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Profile", buttonImage: UIImage(systemName: "person.fill")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Settings", buttonImage: UIImage(systemName: "gear")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Home", buttonImage: UIImage(systemName: "house.fill")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Search", buttonImage: UIImage(systemName: "magnifyingglass")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "Profile", buttonImage: UIImage(systemName: "person.fill")!, viewControllerType: .itemList),
         ]
 
         

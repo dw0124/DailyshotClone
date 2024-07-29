@@ -32,7 +32,7 @@ class ItemDetailViewController: UIViewController, ViewModelBindableType {
 extension ItemDetailViewController {
     func bindViewModel() {
         let dataSource = RxTableViewSectionedReloadDataSource<DetailSectionModel>(
-            configureCell: { dataSource, tableView, indexPath, item in
+            configureCell: { [weak self] dataSource, tableView, indexPath, item in
                 switch item {
                 case .itemCell(let dailyshotItem):
                     let cell = tableView.dequeueReusableCell(withIdentifier: ItemDetailImageCell.identifier, for: indexPath) as! ItemDetailImageCell
@@ -43,7 +43,9 @@ extension ItemDetailViewController {
                 case .storeCell:
                     let cell = tableView.dequeueReusableCell(withIdentifier: ItemDetailStoreCell.identifier, for: indexPath) as! ItemDetailStoreCell
                     
-                    cell.configure(store: Store.dumy())
+                    if let store = self?.viewModel.storeRelay.value {
+                        cell.configure(store: store)
+                    }
                     
                     cell.button.rx.tap
                         .subscribe(onNext: { _ in
@@ -133,9 +135,16 @@ extension ItemDetailViewController {
         
         backButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                self?.navigationController?.popViewController(animated: false)
+                self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
+        
+        homeButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.navigationController?.popToRootViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     func setupTableView() {
@@ -235,8 +244,13 @@ extension ItemDetailViewController {
             .disposed(by: disposeBag)
         
         pickupOrderButton.rx.tap
-            .subscribe(onNext: {
-                let viewModel = SelectStoreViewModel()
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
+                let store = self.viewModel.storeRelay.value
+                let item = self.viewModel.dailyshotItemRelay.value
+                
+                let viewModel = SelectStoreViewModel(store: store, dailyshotItem: item)
                 var viewController = SelectStoreViewcontroller()
                 viewController.bind(viewModel: viewModel)
                 

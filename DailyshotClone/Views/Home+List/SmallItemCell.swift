@@ -33,10 +33,6 @@ class SmallItemCell: UITableViewCell, HomeCellType {
         let itemH = itemW * 2.2
         layout.itemSize = CGSize(width: itemW, height: itemH)
         
-//        let itemWidth: CGFloat = 140
-//        let itemHeight: CGFloat = 300
-//        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
-        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.backgroundView?.backgroundColor = .white
@@ -68,6 +64,8 @@ class SmallItemCell: UITableViewCell, HomeCellType {
         super.prepareForReuse()
         
         imageView?.backgroundColor = .systemGray3
+        disposeBag = DisposeBag()
+        binding()
     }
     
     // setup UI + Layout

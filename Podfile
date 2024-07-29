@@ -13,6 +13,8 @@ target 'DailyshotClone' do
   pod 'RxDataSources'
   pod 'NMapsMap'
   pod 'Cosmos'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
 end
 
 post_install do |installer|

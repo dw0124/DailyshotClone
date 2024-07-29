@@ -13,9 +13,16 @@ struct BannerItem {
     let images: [UIImage]
 }
 
+// 메뉴 연결되는 VC
+enum ViewControllerType {
+    case category
+    case itemList
+}
+
 struct MenuButtonItem {
     let name: String
     let buttonImage: UIImage
+    let viewControllerType: ViewControllerType
 }
 
 // 섹션 모델 정의
@@ -30,7 +37,7 @@ enum SectionItem {
     var height: CGFloat {
         switch self {
         case .banner:
-            return 200
+            return 250
         case .menu:
             return UIScreen.main.bounds.width * 0.5
         case .smallItem:

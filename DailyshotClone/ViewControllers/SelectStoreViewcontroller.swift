@@ -36,9 +36,12 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
         
         setupNavigation()
         setup()
+        
+        setupMarker()
     }
     
     func bindViewModel() {
+        print(#function)
         viewModel.currentLocation
             .bind(to: addressLabel.rx.text)
             .disposed(by: disposeBag)
@@ -47,6 +50,9 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
             .subscribe(onNext: { [weak self] store in
                 self?.storeButton.setTitle(store.name, for: .normal)
                 self?.storeAddressLabel.text = store.address
+                
+                let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: store.lat, lng: store.lng))
+                self?.mapView.moveCamera(cameraUpdate)
             })
             .disposed(by: disposeBag)
         
@@ -56,19 +62,16 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
                 // itemImageView.image
                 
                 self?.itemLabel.text = item.name
-                
-                if let discountRate = item.discountRate {
-                    let totalPrice = calculateDiscountedPrice(price: Double(item.price), discountRate: Double(discountRate))
-                    
-                    self?.priceLabel.attributedText = NSMutableAttributedString()
-                        .priceText(NumberFormatter.setDecimal(totalPrice) + "원", fontSize: 20)
-                        .discountText("  \(discountRate)%  ", fontSize: 16)
-                        .beforeDiscountText("\(NumberFormatter.setDecimal(item.price))", fontSize: 16)
-                    
-                } else {
-                    self?.priceLabel.text = NumberFormatter.setDecimal(item.price) + "원"
-                }
             })
+            .disposed(by: disposeBag)
+        
+        viewModel.totalPrice
+            .map { NumberFormatter.setDecimal($0) + "원" }
+            .bind(to: priceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        stepper.value
+            .bind(to: viewModel.count)
             .disposed(by: disposeBag)
     }
     
@@ -122,7 +125,7 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
         storeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         storeButton.titleLabel?.textAlignment = .left
         storeButton.setTitleColor(.black, for: .normal)
-        storeButton.setTitle("위스키파크 목동점", for: .normal)
+        storeButton.setTitle("매장 이름", for: .normal)
         storeButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         storeButton.semanticContentAttribute = .forceRightToLeft
         storeButton.tintColor = .black
@@ -130,7 +133,7 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
         storeAddressLabel.font = UIFont.systemFont(ofSize: 14, weight: .light)
         storeAddressLabel.numberOfLines = 1
         storeAddressLabel.textAlignment = .left
-        storeAddressLabel.text = "서울 양천구 목동로25길 23 1"
+        storeAddressLabel.text = "매장 주소"
         storeAddressLabel.textColor = .systemGray
         
         let storeStackView = UIStackView(arrangedSubviews: [storeButton, storeAddressLabel])
@@ -263,5 +266,13 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
             $0.width.equalTo(130)
             $0.height.equalTo(44)
         }
+    }
+    
+    func setupMarker() {
+        let store = viewModel.store.value
+        
+        let marker = NMFMarker()
+        marker.position = NMGLatLng(lat: store.lat, lng: store.lng)
+        marker.mapView = mapView
     }
 }

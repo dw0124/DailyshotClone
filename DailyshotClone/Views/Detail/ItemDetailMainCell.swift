@@ -168,16 +168,13 @@ class ItemDetailImageCell: UITableViewCell {
         }
         
         if let discountRate = item.discountRate {
-            let totalPrice = calculateDiscountedPrice(price: Double(item.price), discountRate: Double(discountRate))
-            //priceLabel.text = NumberFormatter.setDecimal(totalPrice) + "원"
-            
             priceLabel.attributedText = NSMutableAttributedString()
-                .priceText(NumberFormatter.setDecimal(totalPrice) + "원", fontSize: 20)
+                .priceText(NumberFormatter.setDecimal(item.finalPrice) + "원", fontSize: 20)
                 .discountText("  \(discountRate)%  ", fontSize: 16)
                 .beforeDiscountText("\(NumberFormatter.setDecimal(item.price))", fontSize: 16)
             
         } else {
-            priceLabel.text = NumberFormatter.setDecimal(item.price) + "원"
+            priceLabel.text = NumberFormatter.setDecimal(item.finalPrice) + "원"
         }
     }
 }

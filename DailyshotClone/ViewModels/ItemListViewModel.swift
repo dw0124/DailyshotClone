@@ -29,8 +29,6 @@ class ItemListViewModel {
     
     var sectionModels = BehaviorRelay<[ItemListSectionModel]>(value: [])
     
-    var sectionModel = PublishRelay<SectionModel>()
-    
     var header: Header?
     
     init(_ sectionModel: SectionModel) {

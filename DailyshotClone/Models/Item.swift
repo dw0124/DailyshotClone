@@ -21,10 +21,18 @@ enum ItemCategory: String, Codable {
 struct DailyshotItem: Codable {
     let itemCategory: ItemCategory  // 상품 카테고리
     let name: String        // 상품명
-    let price: Int          // 가격
+    let price: Int          // 원래 가격
     let discountRate: Int?  // 할인률
     let rating: Double?     // 평점
     let reviewCount: Int?   // 리뷰 수
+    
+    var finalPrice: Int {   // 할인률이 적용된 최종 가격
+        if let discountRate = discountRate, discountRate > 0 {
+            return Int(Double(price) * ((100.0 - Double(discountRate)) / 100.0))
+        } else {
+            return price
+        }
+    }
     
     let specialOffer: Bool  // 특가 표시
     let recommended: Bool   // 추천 표시

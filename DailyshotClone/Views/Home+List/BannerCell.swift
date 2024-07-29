@@ -38,6 +38,7 @@ class BannerCell: UITableViewCell {
         button.layer.cornerRadius = 12
         button.layer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.8).cgColor
         button.tintColor = .white
+        let config = UIImage.SymbolConfiguration(pointSize: 11, weight: .regular, scale: .default)
         button.addPadding(top: 4, leading: 6, bottom: 4, trailing: 6)
         return button
     }()
@@ -102,7 +103,8 @@ class BannerCell: UITableViewCell {
         
         self.bannerImages = images
             
-        bannerIndexButton.setTitle("1 / \(images.count - 2) | 전체보기", for: .normal)
+        let buttonTitle = "1 / \(images.count - 2) | 전체보기"
+        bannerIndexButton.setTitleSize(title: buttonTitle, size: 14, weight: .regular)
         
         collectionView.reloadData()
     }
@@ -154,7 +156,8 @@ extension BannerCell: UIScrollViewDelegate {
         print(index)
         
         
-        self.bannerIndexButton.setTitle("\(Int(index)) / \(self.bannerImages!.count - 2) | 전체보기", for: .normal)
+        let buttonTitle = "\(Int(index)) / \(self.bannerImages!.count - 2) | 전체보기"
+        bannerIndexButton.setTitleSize(title: buttonTitle, size: 14, weight: .regular)
     
     }
 }

@@ -15,7 +15,7 @@ class ItemListHeaderCell: UICollectionReusableView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
         label.textAlignment = .left
-        label.text = "타이틀 타이틀"
+        label.text = ""
         return label
     }()
     
@@ -24,7 +24,7 @@ class ItemListHeaderCell: UICollectionReusableView {
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .left
         label.tintColor = .red
-        label.text = "서브 타이틀"
+        label.text = ""
         return label
     }()
     

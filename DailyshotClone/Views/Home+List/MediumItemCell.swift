@@ -63,6 +63,8 @@ class MediumItemCell: UITableViewCell, HomeCellType {
         super.prepareForReuse()
         
         imageView?.backgroundColor = .systemGray3
+        disposeBag = DisposeBag()
+        binding()
     }
     
     // setup UI + Layout

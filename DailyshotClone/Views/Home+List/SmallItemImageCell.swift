@@ -94,26 +94,4 @@ class SmallItemImageCell: UICollectionViewCell {
             self.ratingLabel.isHidden = true
         }
     }
-    
-    func configure(with item: SectionModel.Item) {
-        
-        var dailyshotItems = [DailyshotItem]()
-        
-        switch item {
-        case .smallItem(let items):
-            for item in items {
-                dailyshotItems.append(item)
-            }
-        case .mediumItem(let items):
-            for item in items {
-                dailyshotItems.append(item)
-            }
-        case .largeItem(let items):
-            for item in items {
-                dailyshotItems.append(item)
-            }
-        default:
-            break
-        }
-    }
 }

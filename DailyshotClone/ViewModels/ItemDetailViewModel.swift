@@ -13,6 +13,8 @@ import RxCocoa
 class ItemDetailViewModel {
     
     var sectionModels = BehaviorRelay<[DetailSectionModel]>(value: [])
+    var dailyshotItemRelay: BehaviorRelay<DailyshotItem>
+    var storeRelay = BehaviorRelay(value: Store.dumy())
     
     init(dailyshotItem: DailyshotItem) {
         let item = DetailSectionModel(type: .item, items: [.itemCell(dailyshotItem)])
@@ -30,6 +32,8 @@ class ItemDetailViewModel {
         }
         
         sectionModels.accept([item, store, tasting, inform, description])
+        
+        dailyshotItemRelay = BehaviorRelay<DailyshotItem>(value: dailyshotItem)
     }
     
 }

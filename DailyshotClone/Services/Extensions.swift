@@ -15,6 +15,7 @@ func calculateDiscountedPrice(price: Double, discountRate: Double) -> Int {
     return Int(discountedPrice)
 }
 
+// MARK: - NumberFormatter
 extension NumberFormatter {
     static func setDecimal(_ num: Int) -> String {
         let numberFormatter = NumberFormatter()
@@ -27,6 +28,7 @@ extension NumberFormatter {
     }
 }
 
+// MARK: - UIButton
 extension UIButton {
     func setUnderline() {
         guard let title = title(for: .normal) else { return }
@@ -54,8 +56,8 @@ extension UIButton {
         self.configuration = config
     }
     
-    func setTitleSize(title: String, size: CGFloat) {
-        let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size)]
+    func setTitleSize(title: String, size: CGFloat, weight: UIFont.Weight = .regular) {
+        let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size, weight: weight)]
         let attributedTitle = NSAttributedString(string: title, attributes: attribute)
         self.setAttributedTitle(attributedTitle, for: .normal)
     }
@@ -73,20 +75,7 @@ extension UIButton {
     }
 }
 
-extension UILabel {
-    func setLineSpacing(spacing: CGFloat) {
-        guard let text = text else { return }
-
-        let attributeString = NSMutableAttributedString(string: text)
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = spacing
-        attributeString.addAttribute(.paragraphStyle,
-                                     value: style,
-                                     range: NSRange(location: 0, length: attributeString.length))
-        attributedText = attributeString
-    }
-}
-
+// MARK: - NSMutableAttributedString
 extension NSMutableAttributedString {
     func priceText(_ value: String, fontSize: CGFloat) -> NSMutableAttributedString {
         
@@ -129,6 +118,7 @@ extension NSMutableAttributedString {
     }
 }
 
+// MARK: - UINavigationController
 extension UINavigationController: UIGestureRecognizerDelegate {
 
     override open func viewDidLoad() {
@@ -141,28 +131,103 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     }
 }
 
+// MARK: - CALayer
 extension CALayer {
-    func addBorder(_ arrEdge: [UIRectEdge], color: UIColor, width: CGFloat) {
-        for edge in arrEdge {
+    func addBorder(_ edges: [UIRectEdge], color: UIColor, width: CGFloat) {
+        for edge in edges {
             let border = CALayer()
             switch edge {
-            case UIRectEdge.top:
-                border.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: width)
-                break
-            case UIRectEdge.bottom:
-                border.frame = CGRect.init(x: 0, y: frame.height - width, width: frame.width, height: width)
-                break
-            case UIRectEdge.left:
-                border.frame = CGRect.init(x: 0, y: 0, width: width, height: frame.height)
-                break
-            case UIRectEdge.right:
-                border.frame = CGRect.init(x: frame.width - width, y: 0, width: width, height: frame.height)
-                break
+            case .top:
+                border.frame = CGRect(x: 0, y: 0, width: frame.width, height: width)
+            case .bottom:
+                border.frame = CGRect(x: 0, y: frame.height - width, width: frame.width, height: width)
+            case .left:
+                border.frame = CGRect(x: 0, y: 0, width: width, height: frame.height)
+            case .right:
+                border.frame = CGRect(x: frame.width - width, y: 0, width: width, height: frame.height)
             default:
-                break
+                continue
             }
-            border.backgroundColor = color.cgColor;
+            border.backgroundColor = color.cgColor
             self.addSublayer(border)
         }
+    }
+}
+
+// MARK: - UILabel + Padding
+class PaddingLabel: UILabel {
+
+    var topInset: CGFloat
+    var bottomInset: CGFloat
+    var leftInset: CGFloat
+    var rightInset: CGFloat
+
+    required init(top: CGFloat, bottom: CGFloat, left: CGFloat, right: CGFloat) {
+        self.topInset = top
+        self.bottomInset = bottom
+        self.leftInset = left
+        self.rightInset = right
+        super.init(frame: CGRect.zero)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func drawText(in rect: CGRect) {
+        let insets = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+        super.drawText(in: rect.inset(by: insets))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        get {
+            var contentSize = super.intrinsicContentSize
+            contentSize.height += topInset + bottomInset
+            contentSize.width += leftInset + rightInset
+            return contentSize
+        }
+    }
+}
+
+extension UILabel {
+    func setLineSpacing(spacing: CGFloat) {
+        guard let text = text else { return }
+
+        let attributeString = NSMutableAttributedString(string: text)
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = spacing
+        attributeString.addAttribute(.paragraphStyle,
+                                     value: style,
+                                     range: NSRange(location: 0, length: attributeString.length))
+        attributedText = attributeString
+    }
+}
+
+
+// MARK: - CollectionView + LeftAlignedCollectionViewFlowLayout(셀 왼쪽 정렬)
+class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        
+        let attributes = super.layoutAttributesForElements(in: rect)
+
+        var leftMargin = sectionInset.left
+        var maxY: CGFloat = -1.0
+        attributes?.forEach { layoutAttribute in
+            guard layoutAttribute.representedElementCategory == .cell else {
+                return
+            }
+            
+            if layoutAttribute.frame.origin.y >= maxY {
+                leftMargin = sectionInset.left
+            }
+
+            layoutAttribute.frame.origin.x = leftMargin
+
+            leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
+            maxY = max(layoutAttribute.frame.maxY , maxY)
+        }
+
+        return attributes
     }
 }

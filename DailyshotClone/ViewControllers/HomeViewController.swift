@@ -42,6 +42,24 @@ extension HomeViewController {
                     return cell
                 case .menu(let items):
                     let cell = tableView.dequeueReusableCell(withIdentifier: MenuCell.identifier, for: indexPath) as! MenuCell
+                    
+                    cell.collectionView.rx.itemSelected
+                        .subscribe(onNext: { [weak self] indexPath in
+                            guard let self = self else { return }
+                            
+                            switch items[indexPath.row].viewControllerType {
+                            case .category:
+                                var viewController = CategoryViewController()
+                                let viewModel = CategoryViewModel()
+                                
+                                navigationController?.pushViewController(viewController, animated: true)
+                            case .itemList:
+                                break
+                            }
+                            
+                        })
+                        .disposed(by: cell.disposeBag)
+                    
                     cell.configure(items)
                     return cell
                 case .smallItem(let items):

@@ -9,13 +9,21 @@ import Foundation
 import UIKit
 import SnapKit
 
+import RxSwift
+import RxRelay
+
 class MenuCell: UITableViewCell {
 
     static let identifier = "MenuCell"
     
+    var disposeBag = DisposeBag()
+    
     var menuImages: [UIImage]?
     
-    var menuItems: [MenuButtonItem]?
+    //var menuItems: [MenuButtonItem]?
+    
+    var menuItems: BehaviorRelay<[MenuButtonItem]> = BehaviorRelay<[MenuButtonItem]>(value: [])
+    
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -39,6 +47,7 @@ class MenuCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setupCell()
+        binding()
     }
     
     required init?(coder: NSCoder) {
@@ -57,6 +66,10 @@ class MenuCell: UITableViewCell {
         super.prepareForReuse()
         
         imageView?.backgroundColor = .systemGray3
+        
+        disposeBag = DisposeBag()
+        
+        binding()
     }
     
     // setup UI + Layout
@@ -66,15 +79,18 @@ class MenuCell: UITableViewCell {
         
         contentView.addSubview(collectionView)
         
-        collectionView.dataSource = self
-        //collectionView.delegate = self
-        collectionView.prefetchDataSource = self
-        
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(8)
         }
     }
     
+    func binding() {
+        menuItems
+            .bind(to: collectionView.rx.items(cellIdentifier: MenuButtonCell.identifier, cellType: MenuButtonCell.self)) { (row, element, cell) in
+                cell.configure(with: element)
+            }
+            .disposed(by: disposeBag)
+    }
     
     // configure
     func configure(_ menuImages: [UIImage]) {
@@ -84,35 +100,8 @@ class MenuCell: UITableViewCell {
     }
     
     func configure(_ menuItems: [MenuButtonItem]) {
-        self.menuItems = menuItems
+        self.menuItems.accept(menuItems)
         collectionView.reloadData()
-    }
-
-    
-}
-
-// MARK: - UICollectionViewDataSource
-extension MenuCell: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return menuItems?.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuButtonCell.identifier, for: indexPath) as? MenuButtonCell else { return UICollectionViewCell() }
-        
-        if let item = menuItems?[indexPath.item] {   
-            cell.configure(with: item)
-        }
-        
-        return cell
-    }
-    
-}
-
-// MARK: - UICollectionViewDataSourcePrefetching
-extension MenuCell: UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        //print(indexPaths)
     }
 }
 
