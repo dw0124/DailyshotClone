@@ -27,8 +27,6 @@ class MenuCell: UITableViewCell {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        //layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
         let itemWidth = 60
         let itemHeight = 80
@@ -38,7 +36,7 @@ class MenuCell: UITableViewCell {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.backgroundView?.backgroundColor = .white
-        collectionView.showsHorizontalScrollIndicator = false
+        //collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(MenuButtonCell.self, forCellWithReuseIdentifier: MenuButtonCell.identifier)
         return collectionView
     }()

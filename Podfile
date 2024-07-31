@@ -15,6 +15,8 @@ target 'DailyshotClone' do
   pod 'Cosmos'
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
+  pod 'FirebaseDatabase'
+  pod 'FirebaseStorage'
 end
 
 post_install do |installer|

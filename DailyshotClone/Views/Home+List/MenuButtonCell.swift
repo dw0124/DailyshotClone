@@ -16,7 +16,7 @@ class MenuButtonCell: UICollectionViewCell {
     // 이미지를 표시할 imageView
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         return imageView
     }()

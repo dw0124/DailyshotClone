@@ -114,7 +114,7 @@ class FilterListViewController: UIViewController, ViewModelBindableType {
         collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
-        viewModel.selectedOptions2
+        viewModel.selectedOptions
             .subscribe(onNext: {
                 print($0)
             })

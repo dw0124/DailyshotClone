@@ -19,6 +19,7 @@ enum ItemCategory: String, Codable {
 }
 
 struct DailyshotItem: Codable {
+    let productId: String
     let itemCategory: ItemCategory  // 상품 카테고리
     let name: String        // 상품명
     let price: Int          // 원래 가격

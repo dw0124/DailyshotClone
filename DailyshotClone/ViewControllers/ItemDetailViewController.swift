@@ -269,7 +269,7 @@ extension ItemDetailViewController: UITableViewDelegate {
         case .store:
             return 3
         case .tastingNotes:
-            return 6
+            return 3
         case .information:
             return 3
         case .description:

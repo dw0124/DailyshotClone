@@ -89,7 +89,7 @@ class LargeItemImageCell: UICollectionViewCell {
     
     func configure(with item: DailyshotItem) {
         self.nameLabel.text = item.name
-        self.priceLabel.text = "\(item.price)"
+        self.priceLabel.text = NumberFormatter.setDecimal(item.price)
         
         if let rating = item.rating, rating > 0 {
             self.ratingLabel.text = "\(rating)"

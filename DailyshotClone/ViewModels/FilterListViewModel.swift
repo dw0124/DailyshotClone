@@ -37,9 +37,7 @@ class FilterListViewModel {
     
     var sectionModels = BehaviorRelay<[FilterListSectionModel]>(value: [])
     
-    var selectedOptions = BehaviorRelay<[String]>(value: [])
-    
-    var selectedOptions2 = BehaviorRelay<[String:[String]]>(value: [:])
+    var selectedOptions = BehaviorRelay<[String:[String]]>(value: [:])
     
     init() {
         let service = FilterListSectionModel(type: .service, header: "서비스", items: ["스토어", "파트너", "배송상품"])
@@ -53,7 +51,7 @@ class FilterListViewModel {
     func selectOption(type: String, option: String) {
         print(type, option)
         
-        var options = selectedOptions2.value
+        var options = selectedOptions.value
 
         if var typeOptions = options[type] {
             if let index = typeOptions.firstIndex(of: option) {
@@ -72,11 +70,11 @@ class FilterListViewModel {
             options[type] = [option]
         }
 
-        selectedOptions2.accept(options)
+        selectedOptions.accept(options)
     }
 
 
     func resetOption() {
-        selectedOptions2.accept([:])
+        selectedOptions.accept([:])
     }
 }
