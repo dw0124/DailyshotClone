@@ -27,6 +27,7 @@ class HomeViewController: UIViewController, ViewModelBindableType {
         
         
         setup()
+        setupNavigtaion()
     }
 }
 
@@ -52,6 +53,7 @@ extension HomeViewController {
                                 var viewController = CategoryViewController()
                                 let viewModel = CategoryViewModel()
                                 
+                                viewController.hidesBottomBarWhenPushed = true
                                 navigationController?.pushViewController(viewController, animated: true)
                             case .itemList:
                                 break
@@ -85,7 +87,6 @@ extension HomeViewController {
     
     private func setup() {
         view.backgroundColor = .white
-        navigationController?.navigationBar.backgroundColor = .clear
         
         tableView.register(BannerCell.self, forCellReuseIdentifier: BannerCell.identifier)
         tableView.register(MenuCell.self, forCellReuseIdentifier: MenuCell.identifier)
@@ -104,7 +105,38 @@ extension HomeViewController {
         }
     }
     
-    func configureCell<T: HomeCellType>(tableView: UITableView, indexPath: IndexPath, items: [T.ItemType], cellType: T.Type) -> T {
+    private func setupNavigtaion() {
+        navigationController?.navigationBar.backgroundColor = .clear
+        
+        let addressButton = UIButton(type: .system)
+        addressButton.setTitle("서울특별시 강서구 등촌로5길 18-36", for: .normal)
+        addressButton.titleLabel?.lineBreakMode = .byTruncatingTail
+        addressButton.titleLabel?.numberOfLines = 1
+        
+        // UIBarButtonItem에 customView를 설정
+        let barButtonItem = UIBarButtonItem(customView: addressButton)
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: nil)
+        let cartButton = UIBarButtonItem(image: UIImage(systemName: "cart"), style: .plain, target: self, action: nil)
+        
+        addressButton.tintColor = .black
+        searchButton.tintColor = .black
+        cartButton.tintColor = .black
+        
+        barButtonItem.customView?.snp.makeConstraints {
+            $0.width.equalTo(200)
+        }
+        
+        searchButton.customView?.setContentCompressionResistancePriority(.required, for: .horizontal)
+        cartButton.customView?.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        navigationItem.leftBarButtonItems = [barButtonItem, flexibleSpace]
+        navigationItem.rightBarButtonItems = [cartButton, searchButton]
+        
+    }
+    
+    private func configureCell<T: HomeCellType>(tableView: UITableView, indexPath: IndexPath, items: [T.ItemType], cellType: T.Type) -> T {
         let cell = tableView.dequeueReusableCell(withIdentifier: T.identifier, for: indexPath) as! T
         
         cell.configure(items)

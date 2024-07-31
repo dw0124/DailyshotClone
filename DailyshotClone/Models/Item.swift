@@ -50,7 +50,7 @@ struct DailyshotItem: Codable {
     let specialOffer: Bool  // 특가 표시
     let recommended: Bool   // 추천 표시
     
-    let thumnailImageURL: String    // 섬네일 이미지
+    let thumbnailImageURL: String    // 섬네일 이미지
     let productImageURL: String     // 상품 이미지
     let detailImageURL: String      // 상품 상세 이미지
     

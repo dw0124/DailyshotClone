@@ -25,6 +25,8 @@ class ItemDetailViewController: UIViewController, ViewModelBindableType {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hidesBottomBarWhenPushed = true
+        
         setup()
     }
 }

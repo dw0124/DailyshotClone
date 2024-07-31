@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7A002584C57FAF4D390DEB06 /* Pods_DailyshotClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 069FDD729D8DDC6A74CCD2DE /* Pods_DailyshotClone.framework */; };
+		BE4B196E2C59F23200C86417 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4B196D2C59F23200C86417 /* MainTabBarViewController.swift */; };
+		BE4B19702C59F74E00C86417 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4B196F2C59F74E00C86417 /* MyPageViewController.swift */; };
 		BE5D6F4F2C32A55B0061651B /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5D6F4E2C32A55B0061651B /* Store.swift */; };
 		BE5D6F532C3532B50061651B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = BE5D6F522C3532B50061651B /* .gitignore */; };
 		BE5D6F5C2C354D520061651B /* ItemDetailDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5D6F5B2C354D520061651B /* ItemDetailDescriptionCell.swift */; };
@@ -68,6 +70,8 @@
 /* Begin PBXFileReference section */
 		069FDD729D8DDC6A74CCD2DE /* Pods_DailyshotClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DailyshotClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3551E7E6FBED07DFD320D939 /* Pods-DailyshotClone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DailyshotClone.debug.xcconfig"; path = "Target Support Files/Pods-DailyshotClone/Pods-DailyshotClone.debug.xcconfig"; sourceTree = "<group>"; };
+		BE4B196D2C59F23200C86417 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
+		BE4B196F2C59F74E00C86417 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		BE5D6F4E2C32A55B0061651B /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		BE5D6F522C3532B50061651B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		BE5D6F572C3538370061651B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 		BE7550862C12CFC800854C4D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				BE4B196D2C59F23200C86417 /* MainTabBarViewController.swift */,
 				BEC145232C22D73000D228C1 /* ViewModelBindableType.swift */,
 				BE7550882C12D3D600854C4D /* HomeViewController.swift */,
 				BE5D6F672C41307B0061651B /* CategoryViewController.swift */,
@@ -241,6 +246,7 @@
 				BEC1451F2C22D5DE00D228C1 /* ItemListViewController.swift */,
 				BEC145292C2BFB8D00D228C1 /* ItemDetailViewController.swift */,
 				BE5D6F612C3E92480061651B /* SelectStoreViewcontroller.swift */,
+				BE4B196F2C59F74E00C86417 /* MyPageViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -443,10 +449,12 @@
 				BE5D6F7B2C47A4C60061651B /* SectionBackgroundView.swift in Sources */,
 				BE5D6F752C4659B50061651B /* FilterListViewController.swift in Sources */,
 				BEC1451A2C1AE16700D228C1 /* LargeItemImageCell.swift in Sources */,
+				BE4B196E2C59F23200C86417 /* MainTabBarViewController.swift in Sources */,
 				BEC145182C1AE14F00D228C1 /* LargeItemCell.swift in Sources */,
 				BEC1452A2C2BFB8D00D228C1 /* ItemDetailViewController.swift in Sources */,
 				BEC145382C2C0B6200D228C1 /* DetailDataSource.swift in Sources */,
 				BEC1450A2C19897A00D228C1 /* WebService.swift in Sources */,
+				BE4B19702C59F74E00C86417 /* MyPageViewController.swift in Sources */,
 				BE5D6F5E2C3BCF1E0061651B /* ItemDetailTastingNotesCell.swift in Sources */,
 				BE7550712C12CF2800854C4D /* AppDelegate.swift in Sources */,
 				BEC1451E2C22B76E00D228C1 /* HomeItemHeaderCell.swift in Sources */,

@@ -21,13 +21,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let viewModel = HomeViewModel()
-        var viewController = HomeViewController()
-        viewController.bind(viewModel: viewModel)
+//        let viewModel = HomeViewModel()
+//        var viewController = HomeViewController()
+//        viewController.bind(viewModel: viewModel)
+//        
+//        let navigationController = UINavigationController(rootViewController: viewController)
+        let viewController = MainTabBarViewController()
         
-        let navigationController = UINavigationController(rootViewController: viewController)
-        
-        window.rootViewController = navigationController
+        window.rootViewController = viewController
         window.makeKeyAndVisible()
         
         self.window = window

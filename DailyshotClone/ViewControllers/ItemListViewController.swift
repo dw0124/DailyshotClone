@@ -40,6 +40,8 @@ class ItemListViewController: UIViewController, ViewModelBindableType {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hidesBottomBarWhenPushed = true
+        
         view.backgroundColor = .white
         
         view.addSubview(collectionView)
