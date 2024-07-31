@@ -9,9 +9,13 @@ import UIKit
 import Foundation
 import SnapKit
 
+import RxSwift
+
 class MediumItemImageCell: UICollectionViewCell {
     
     static let identifier = "MediumItemImageCell"
+    
+    var disposeBag = DisposeBag()
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -61,6 +65,12 @@ class MediumItemImageCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
+    }
+    
     private func setupImageView() {
         lazy var vStackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [nameLabel, priceLabel, ratingLabel, emptyView])
@@ -101,5 +111,13 @@ class MediumItemImageCell: UICollectionViewCell {
         } else {
             self.ratingLabel.isHidden = true
         }
+        
+        let imageURLStr = item.thumbnailImageURL
+        ImageCacheManager.shared.loadImageFromStorage(storagePath: imageURLStr)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] image in
+                self?.imageView.image = image
+            })
+            .disposed(by: disposeBag)
     }
 }

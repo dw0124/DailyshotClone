@@ -107,7 +107,7 @@ class ImageCacheManager {
     
     private init() {}
     
-    /// firebase storage에서 이미지 데이터 불러오는 메소드
+    /// firebase storage에서 이미지 데이터 불러오는 메소드.
     func loadImageFromStorage(storagePath: String) -> Observable<UIImage?> {
         Observable.create { observer in
             // Firebase Storage에 저장된 이미지를 저장하지 않았을때
