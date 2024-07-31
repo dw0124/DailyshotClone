@@ -16,6 +16,18 @@ enum ItemCategory: String, Codable {
     case brandy
     case rum
     case vodka
+    
+    var displayName: String {
+        switch self {
+        case .whisky: return "위스키"
+        case .beer: return "맥주"
+        case .wine: return "와인"
+        case .liqueur: return "리큐르"
+        case .brandy: return "브랜디"
+        case .rum: return "럼"
+        case .vodka: return "보드카"
+        }
+    }
 }
 
 struct DailyshotItem: Codable {

@@ -39,6 +39,9 @@ class FilterListViewModel {
     
     var selectedOptions = BehaviorRelay<[String:[String]]>(value: [:])
     
+    // 한번 이상 필터를 적용했고 다시 화면이 불러졌을 때 IndexPath를 isSelected 상태로 만들기 위한 프로퍼티
+    var preSelectedIndexPath = BehaviorRelay<[IndexPath]>(value: [])
+    
     init() {
         let service = FilterListSectionModel(type: .service, header: "서비스", items: ["스토어", "파트너", "배송상품"])
         let category = FilterListSectionModel(type: .category, header: "카테고리", items: ["위스키", "와인", "리큐르", "맥주", "기타"])
@@ -49,8 +52,6 @@ class FilterListViewModel {
     }
     
     func selectOption(type: String, option: String) {
-        print(type, option)
-        
         var options = selectedOptions.value
 
         if var typeOptions = options[type] {
@@ -59,10 +60,8 @@ class FilterListViewModel {
             } else {
                 typeOptions.append(option)
             }
-            // Update options dictionary
             options[type] = typeOptions
             
-            // Check if typeOptions array is empty, remove type from dictionary
             if typeOptions.isEmpty {
                 options.removeValue(forKey: type)
             }

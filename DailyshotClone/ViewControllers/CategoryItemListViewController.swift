@@ -96,22 +96,33 @@ class CategoryItemListViewController: UIViewController, ViewModelBindableType {
             .subscribe(onNext: {
                 
                 let viewModel = FilterListViewModel()
+                viewModel.preSelectedIndexPath.accept(self.viewModel.filterListIndexPath)
+                
+                do {
+                    let filterList = try self.viewModel.filterList.value()
+                    viewModel.selectedOptions.accept(filterList)
+                } catch {
+                    print(error)
+                }
+                
                 var viewController = FilterListViewController()
                 viewController.bind(viewModel: viewModel)
+                viewController.delegate = self
                 
                 let navigationController = UINavigationController(rootViewController: viewController)
-                navigationController.modalPresentationStyle = .automatic  // 또는 .automatic, .overFullScreen 등 필요에 따라 변경
+                navigationController.modalPresentationStyle = .automatic
                 self.present(navigationController, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
 }
 
-extension UIView {
-  func roundCorners(corners: UIRectCorner, radius: CGFloat) {
-       let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-       let mask = CAShapeLayer()
-       mask.path = path.cgPath
-       layer.mask = mask
-   }
+extension CategoryItemListViewController: FilterListDelegate {
+    func didSelectFilterList(_ data: [String : [String]]) {
+        viewModel.filterList.onNext(data)
+    }
+    
+    func didSelectFilterIndexPath(_ indexPath: [IndexPath]) {
+        viewModel.filterListIndexPath = indexPath
+    }
 }

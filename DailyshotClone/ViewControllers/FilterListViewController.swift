@@ -10,7 +10,14 @@ import SnapKit
 import RxSwift
 import RxDataSources
 
+protocol FilterListDelegate: AnyObject {
+    func didSelectFilterList(_ data: [String: [String]])
+    func didSelectFilterIndexPath(_ indexPath: [IndexPath]) 
+}
+
 class FilterListViewController: UIViewController, ViewModelBindableType {
+    
+    var delegate: FilterListDelegate?
     
     var viewModel: FilterListViewModel!
     var disposeBag = DisposeBag()
@@ -114,16 +121,41 @@ class FilterListViewController: UIViewController, ViewModelBindableType {
         collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
-        viewModel.selectedOptions
-            .subscribe(onNext: {
-                print($0)
-            })
-            .disposed(by: disposeBag)
-        
         // 리셋 버튼
         resetButton.rx.tap
             .bind(onNext: { [weak self] _ in
                 self?.viewModel.resetOption()
+                
+                if let selectedIndexPaths = self?.collectionView.indexPathsForSelectedItems {
+                    for indexPath in selectedIndexPaths {
+                        self?.collectionView.deselectItem(at: indexPath, animated: false)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)        
+        
+        // 필터 적용 버튼
+        setFilterButton.rx.tap
+            .bind(onNext: { [weak self] _ in
+                if let filterList = self?.viewModel.selectedOptions.value {
+                    self?.delegate?.didSelectFilterList(filterList)
+                }
+                
+                if let indexPaths = self?.collectionView.indexPathsForSelectedItems {
+                    self?.delegate?.didSelectFilterIndexPath(indexPaths)
+                }
+                
+                self?.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.preSelectedIndexPath
+            .subscribe(onNext: { [weak self] indexPaths in
+                print(indexPaths.count)
+                indexPaths.forEach { indexPath in
+                    self?.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
+                    //self?.collectionView.cellForItem(at: indexPath)
+                }
             })
             .disposed(by: disposeBag)
     }
