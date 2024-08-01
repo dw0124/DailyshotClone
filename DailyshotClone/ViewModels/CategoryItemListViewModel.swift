@@ -27,9 +27,13 @@ class CategoryItemListViewModel {
     
     private func loadData(from urlStr: String) {
         // API 호출 구현 예정
-        let items = WebService.load([DailyshotItem].self, from: "productData")!
-        self.originalItems.accept(items)
-        self.filteredItems.accept(items)
+        WebService.fetchItems()
+            .subscribe(onNext: { [weak self] items in
+                self?.originalItems.accept(items)
+                self?.filteredItems.accept(items)
+            })
+            .disposed(by: disposeBag)
+            
     }
     
     private func binding() {

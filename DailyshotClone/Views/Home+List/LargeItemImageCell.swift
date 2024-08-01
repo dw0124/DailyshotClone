@@ -78,6 +78,8 @@ class LargeItemImageCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        imageView.image = nil
+        
         disposeBag = DisposeBag()
     }
     
@@ -99,7 +101,18 @@ class LargeItemImageCell: UICollectionViewCell {
     
     func configure(with item: DailyshotItem) {
         self.nameLabel.text = item.name
-        self.priceLabel.text = NumberFormatter.setDecimal(item.price)
+        
+        if let discount = item.discountRate {
+            if discount > 0 {
+                let discountText = "\(discount)% "
+                
+                priceLabel.attributedText = NSMutableAttributedString()
+                    .coloredText(discountText, fontSize: 17, weight: .semibold, textColor: .orange)
+                    .priceText(NumberFormatter.setDecimal(item.finalPrice), fontSize: 17)
+            }
+        } else {
+            self.priceLabel.text = NumberFormatter.setDecimal(item.price)
+        }
         
         if let rating = item.rating, rating > 0 {
             self.ratingLabel.text = "\(rating)"
