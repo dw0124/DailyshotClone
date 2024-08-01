@@ -27,13 +27,13 @@ class HomeViewModel {
         bannerImages = [UIImage(systemName: "circle.fill")!, UIImage(systemName: "house.fill")!,UIImage(systemName: "person.fill")!]
         
         menuButtons = [
-            MenuButtonItem(name: "픽업가이드", buttonImage: UIImage(systemName: "text.book.closed.fill")!, viewControllerType: .itemList),
-            MenuButtonItem(name: "카테고리", buttonImage: UIImage(systemName: "house.fill")!, viewControllerType: .category),
-            MenuButtonItem(name: "공동구매", buttonImage: UIImage(systemName: "person.2.fill")!, viewControllerType: .itemList),
-            MenuButtonItem(name: "베스트", buttonImage: UIImage(systemName: "star.fill")!, viewControllerType: .itemList),
-            MenuButtonItem(name: "신상품", buttonImage: UIImage(systemName: "circle.fill")!, viewControllerType: .itemList),
-            MenuButtonItem(name: "MD픽", buttonImage: UIImage(systemName: "hand.point.up.fill")!, viewControllerType: .itemList),
-            MenuButtonItem(name: "집앞배송", buttonImage: UIImage(systemName: "box.truck.fill")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "픽업가이드", buttonImage: UIImage(named: "guideline-icon")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "베스트", buttonImage: UIImage(named: "thumbup-icon")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "공동구매", buttonImage: UIImage(named: "people-icon")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "MD픽", buttonImage: UIImage(named: "pick-icon")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "카테고리", buttonImage: UIImage(named: "categories-icon")!, viewControllerType: .category),
+            MenuButtonItem(name: "신상품", buttonImage: UIImage(named: "new-icon")!, viewControllerType: .itemList),
+            MenuButtonItem(name: "집앞배송", buttonImage: UIImage(named: "truck-icon")!, viewControllerType: .itemList),
         ]
         
         dailyshotItems

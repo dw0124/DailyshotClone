@@ -9,15 +9,20 @@ import UIKit
 import SnapKit
 import Cosmos
 
+import RxSwift
+
 class ItemDetailImageCell: UITableViewCell {
 
     static let identifier = "ItemDetailImageCell"
+    
+    var disposeBag = DisposeBag()
     
     var menuImages: UIImage?
     
     let itemImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .systemGray
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -122,6 +127,8 @@ class ItemDetailImageCell: UITableViewCell {
         super.prepareForReuse()
         
         imageView?.backgroundColor = .systemGray3
+        
+        disposeBag = DisposeBag()
     }
     
     // setup UI + Layout
@@ -176,5 +183,13 @@ class ItemDetailImageCell: UITableViewCell {
         } else {
             priceLabel.text = NumberFormatter.setDecimal(item.finalPrice) + "원"
         }
+        
+        let imageURLStr = item.productImageURL
+        ImageCacheManager.shared.loadImageFromStorage(storagePath: imageURLStr)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] image in
+                self?.itemImageView.image = image
+            })
+            .disposed(by: disposeBag)
     }
 }
