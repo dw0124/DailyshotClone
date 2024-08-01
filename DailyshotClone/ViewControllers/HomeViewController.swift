@@ -109,7 +109,7 @@ extension HomeViewController {
         navigationController?.navigationBar.backgroundColor = .clear
         
         let addressButton = UIButton(type: .system)
-        addressButton.setTitle("서울특별시 강서구 등촌로5길 18-36", for: .normal)
+        addressButton.setTitle("서울특별시 강서구", for: .normal)
         addressButton.titleLabel?.lineBreakMode = .byTruncatingTail
         addressButton.titleLabel?.numberOfLines = 1
         
@@ -126,6 +126,10 @@ extension HomeViewController {
         
         barButtonItem.customView?.snp.makeConstraints {
             $0.width.equalTo(200)
+        }
+        
+        addressButton.titleLabel?.snp.makeConstraints {
+            $0.leading.equalToSuperview()
         }
         
         searchButton.customView?.setContentCompressionResistancePriority(.required, for: .horizontal)

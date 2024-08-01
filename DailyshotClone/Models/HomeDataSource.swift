@@ -37,15 +37,18 @@ enum SectionItem {
     var height: CGFloat {
         switch self {
         case .banner:
-            return 250
+            let screenWidth = UIScreen.main.bounds.width
+            let aspectRatio: CGFloat = 9.0 / 16.0
+            return screenWidth * aspectRatio
         case .menu:
-            return UIScreen.main.bounds.width * 0.5
+            //return UIScreen.main.bounds.width * 0.28
+            return 100
         case .smallItem:
             return UIScreen.main.bounds.width * 0.78
         case .mediumItem:
             return UIScreen.main.bounds.width * 0.75
         case .largeItem:
-            return UIScreen.main.bounds.width * 0.85
+            return UIScreen.main.bounds.width * 0.86
         }
     }
 }
