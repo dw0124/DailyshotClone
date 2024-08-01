@@ -58,10 +58,14 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
         
         viewModel.dailyshotItem
             .subscribe(onNext: { [weak self] item in
-                // 이미지 처리
-                // itemImageView.image
                 
                 self?.itemLabel.text = item.name
+            })
+            .disposed(by: disposeBag)
+        
+        ImageCacheManager.shared.loadImageFromStorage(storagePath: viewModel.dailyshotItem.value.thumbnailImageURL)
+            .subscribe(onNext: { [weak self] image in
+                self?.itemImageView.image = image
             })
             .disposed(by: disposeBag)
         
