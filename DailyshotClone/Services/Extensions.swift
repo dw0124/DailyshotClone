@@ -77,6 +77,19 @@ extension UIButton {
 
 // MARK: - NSMutableAttributedString
 extension NSMutableAttributedString {
+    func coloredText(_ value:String, fontSize: CGFloat, weight: UIFont.Weight, textColor: UIColor) -> NSMutableAttributedString {
+        
+        let font = UIFont.systemFont(ofSize: fontSize, weight: weight)
+        
+        let attributes:[NSAttributedString.Key : Any] = [
+            .font: font,
+            .foregroundColor: textColor
+        ]
+
+        self.append(NSAttributedString(string: value, attributes:attributes))
+        return self
+    }
+    
     func priceText(_ value: String, fontSize: CGFloat) -> NSMutableAttributedString {
         
         let font = UIFont.systemFont(ofSize: fontSize, weight: .semibold)
