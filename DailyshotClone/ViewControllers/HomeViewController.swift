@@ -138,6 +138,17 @@ extension HomeViewController {
         navigationItem.leftBarButtonItems = [barButtonItem, flexibleSpace]
         navigationItem.rightBarButtonItems = [cartButton, searchButton]
         
+        cartButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                var viewController = CartViewController()
+                let viewModel = CartViewModel()
+                viewController.bind(viewModel: viewModel)
+                
+                viewController.hidesBottomBarWhenPushed = true
+                
+                self?.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func configureCell<T: HomeCellType>(tableView: UITableView, indexPath: IndexPath, items: [T.ItemType], cellType: T.Type) -> T {

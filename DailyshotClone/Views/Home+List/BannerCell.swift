@@ -26,6 +26,8 @@ class BannerCell: UITableViewCell {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.backgroundView?.backgroundColor = .white
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(BannerImageCell.self, forCellWithReuseIdentifier: BannerImageCell.identifier)
         return collectionView
     }()

@@ -93,6 +93,12 @@ class CustomStepper: UIControl{
             .map { "\($0)" }
             .bind(to: centerLbl.rx.text)
             .disposed(by: disposeBag)
+        
+        value
+            .subscribe(onNext: { [weak self] _ in
+                self?.updateButtonStates()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func valueChange(_ sender: UIButton) {
@@ -103,6 +109,16 @@ class CustomStepper: UIControl{
         leftBtn.tintColor = leftBtn.isEnabled ? .black : .systemGray4
         
         rightBtn.isEnabled = value.value == 99 ? false : true
+        rightBtn.tintColor = rightBtn.isEnabled ? .black : .systemGray4
+    }
+    
+    private func updateButtonStates() {
+        let currentValue = value.value
+        
+        leftBtn.isEnabled = currentValue == 1 ? false : true
+        leftBtn.tintColor = leftBtn.isEnabled ? .black : .systemGray4
+        
+        rightBtn.isEnabled = currentValue == 99 ? false : true
         rightBtn.tintColor = rightBtn.isEnabled ? .black : .systemGray4
     }
 }
