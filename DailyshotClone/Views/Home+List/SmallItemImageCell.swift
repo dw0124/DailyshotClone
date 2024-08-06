@@ -113,10 +113,16 @@ class SmallItemImageCell: UICollectionViewCell {
         }
         
         if let rating = item.rating, rating > 0 {
-            self.ratingLabel.text = "\(rating)"
-            self.ratingLabel.isHidden = false
+            ratingLabel.isHidden = false
+            let attributedString = NSMutableAttributedString(string: "")
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(systemName: "star.fill")?.withTintColor(.systemYellow)
+            imageAttachment.bounds = CGRect(x: 0, y: -2, width: 14, height: 14)
+            attributedString.append(NSAttributedString(attachment: imageAttachment))
+            attributedString.append(NSAttributedString(string: "\(rating) (\(item.reviewCount ?? 0))"))
+            ratingLabel.attributedText = attributedString
         } else {
-            self.ratingLabel.isHidden = true
+            ratingLabel.isHidden = true
         }
         
         let imageURLStr = item.thumbnailImageURL
