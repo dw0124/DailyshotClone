@@ -23,11 +23,19 @@ class MainTabBarViewController: UITabBarController {
         homeVC.tabBarItem = homeTabBarItem
         let homeNC = UINavigationController(rootViewController: homeVC)
         
+        // 위시리스트
+        var wishListVC = WishListViewController()
+        let wishListVM = WishListViewModel()
+        wishListVC.bind(viewModel: wishListVM)
+        let wishListTabBarItem = UITabBarItem(title: "위시리스트", image: UIImage(systemName: "heart"), selectedImage: UIImage(systemName: "heart.fill"))
+        wishListVC.tabBarItem = wishListTabBarItem
+        let wishListNC = UINavigationController(rootViewController: wishListVC)
+        
         // 마이 페이지
         var myPageVC = MyPageViewController()
         let myPageTabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
         myPageVC.tabBarItem = myPageTabBarItem
         
-        self.viewControllers = [homeNC, myPageVC]
+        self.viewControllers = [homeNC, wishListNC, myPageVC]
     }
 }

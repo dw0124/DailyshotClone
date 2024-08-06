@@ -10,6 +10,9 @@
 		7A002584C57FAF4D390DEB06 /* Pods_DailyshotClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 069FDD729D8DDC6A74CCD2DE /* Pods_DailyshotClone.framework */; };
 		BE4988432C605DF100C59B10 /* CartHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4988422C605DF100C59B10 /* CartHeaderView.swift */; };
 		BE4988452C605E5B00C59B10 /* CartFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4988442C605E5B00C59B10 /* CartFooterView.swift */; };
+		BE4988472C61C24A00C59B10 /* WishListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4988462C61C24A00C59B10 /* WishListViewController.swift */; };
+		BE4988492C61C34300C59B10 /* WishListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4988482C61C34300C59B10 /* WishListViewModel.swift */; };
+		BE49884C2C61C44F00C59B10 /* WishListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE49884B2C61C44F00C59B10 /* WishListCell.swift */; };
 		BE4B196E2C59F23200C86417 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4B196D2C59F23200C86417 /* MainTabBarViewController.swift */; };
 		BE4B19702C59F74E00C86417 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4B196F2C59F74E00C86417 /* MyPageViewController.swift */; };
 		BE4B19722C5B7BCB00C86417 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4B19712C5B7BCB00C86417 /* CartViewController.swift */; };
@@ -77,6 +80,9 @@
 		3551E7E6FBED07DFD320D939 /* Pods-DailyshotClone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DailyshotClone.debug.xcconfig"; path = "Target Support Files/Pods-DailyshotClone/Pods-DailyshotClone.debug.xcconfig"; sourceTree = "<group>"; };
 		BE4988422C605DF100C59B10 /* CartHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartHeaderView.swift; sourceTree = "<group>"; };
 		BE4988442C605E5B00C59B10 /* CartFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartFooterView.swift; sourceTree = "<group>"; };
+		BE4988462C61C24A00C59B10 /* WishListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishListViewController.swift; sourceTree = "<group>"; };
+		BE4988482C61C34300C59B10 /* WishListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishListViewModel.swift; sourceTree = "<group>"; };
+		BE49884B2C61C44F00C59B10 /* WishListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishListCell.swift; sourceTree = "<group>"; };
 		BE4B196D2C59F23200C86417 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		BE4B196F2C59F74E00C86417 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		BE4B19712C5B7BCB00C86417 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
@@ -172,6 +178,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		BE49884A2C61C3A600C59B10 /* WishList */ = {
+			isa = PBXGroup;
+			children = (
+				BE49884B2C61C44F00C59B10 /* WishListCell.swift */,
+			);
+			path = WishList;
+			sourceTree = "<group>";
+		};
 		BE4B19752C5B7F0000C86417 /* Cart */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,6 +264,7 @@
 				BE5D6F762C466BDE0061651B /* FilterListViewModel.swift */,
 				BEC145212C22D63800D228C1 /* ItemListViewModel.swift */,
 				BEC1452B2C2BFBBF00D228C1 /* ItemDetailViewModel.swift */,
+				BE4988482C61C34300C59B10 /* WishListViewModel.swift */,
 				BE5D6F632C3E92800061651B /* SelectStoreViewModel.swift */,
 			);
 			path = ViewModels;
@@ -268,6 +283,7 @@
 				BEC1451F2C22D5DE00D228C1 /* ItemListViewController.swift */,
 				BEC145292C2BFB8D00D228C1 /* ItemDetailViewController.swift */,
 				BE5D6F612C3E92480061651B /* SelectStoreViewcontroller.swift */,
+				BE4988462C61C24A00C59B10 /* WishListViewController.swift */,
 				BE4B196F2C59F74E00C86417 /* MyPageViewController.swift */,
 			);
 			path = ViewControllers;
@@ -294,6 +310,7 @@
 				BE4B19752C5B7F0000C86417 /* Cart */,
 				BE5D6F692C4140160061651B /* Category */,
 				BEC145342C2C052300D228C1 /* Detail */,
+				BE49884A2C61C3A600C59B10 /* WishList */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -476,10 +493,12 @@
 				BEC145182C1AE14F00D228C1 /* LargeItemCell.swift in Sources */,
 				BEC1452A2C2BFB8D00D228C1 /* ItemDetailViewController.swift in Sources */,
 				BEC145382C2C0B6200D228C1 /* DetailDataSource.swift in Sources */,
+				BE4988492C61C34300C59B10 /* WishListViewModel.swift in Sources */,
 				BEC1450A2C19897A00D228C1 /* WebService.swift in Sources */,
 				BE4B19702C59F74E00C86417 /* MyPageViewController.swift in Sources */,
 				BE5D6F5E2C3BCF1E0061651B /* ItemDetailTastingNotesCell.swift in Sources */,
 				BE7550712C12CF2800854C4D /* AppDelegate.swift in Sources */,
+				BE4988472C61C24A00C59B10 /* WishListViewController.swift in Sources */,
 				BEC1451E2C22B76E00D228C1 /* HomeItemHeaderCell.swift in Sources */,
 				BEC145162C1AE05F00D228C1 /* MediumItemImageCell.swift in Sources */,
 				BEC145362C2C08FF00D228C1 /* Extensions.swift in Sources */,
@@ -523,6 +542,7 @@
 				BE75508B2C12D6B800854C4D /* HomeViewModel.swift in Sources */,
 				BE5D6F7F2C47E3660061651B /* C_SeparatorView.swift in Sources */,
 				BEC145282C2BF45900D228C1 /* HomeCellType.swift in Sources */,
+				BE49884C2C61C44F00C59B10 /* WishListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
