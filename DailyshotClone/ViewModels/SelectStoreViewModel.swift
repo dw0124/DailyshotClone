@@ -35,4 +35,24 @@ class SelectStoreViewModel {
             .disposed(by: disposeBag)
     }
     
+    func saveToCart() {
+        let itemId = dailyshotItem.value.productId
+        let storeId = store.value.storeId
+        let count = count.value
+        
+        CartManager.addToCart(itemId: itemId, storeId: storeId, count: count)        
+            .subscribe(onNext: { success in
+            if success {
+                print("Item added to cart successfully.")
+            } else {
+                print("Failed to add item to cart.")
+            }
+        }, onError: { error in
+            // 에러 발생 시 화면에 Alert 표시
+            print(error.localizedDescription)
+        }, onDisposed: {
+            print("dispose!")
+        })
+        .disposed(by: disposeBag)
+    }
 }

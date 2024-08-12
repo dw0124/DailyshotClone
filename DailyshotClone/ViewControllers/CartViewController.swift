@@ -23,15 +23,62 @@ class CartViewController: UIViewController, ViewModelBindableType {
         
         setup()
         setupNavigtaion()
-        
-        tableView.dataSource = self
-        tableView.delegate = self
     }
 }
 
 extension CartViewController {
     func bindViewModel() {
+        viewModel.displayedCartRelay
+            .bind(to: tableView.rx.items(cellIdentifier: CartCell.identifier, cellType: CartCell.self)) { index, cart, cell in
+                
+                let cart = self.viewModel.cartRelay.value[index]
+                
+                let isSelected = cart.isSelected
+                let item = cart.item
+                let store = cart.store
+                let itemCount = cart.count
+                
+                self.viewModel.cartRelay
+                    .subscribe(onNext: { cartItems in
+                        guard index < cartItems.count else { return }
+                        let isSelected = cartItems[index].isSelected
+                        cell.selectButton.isSelected = isSelected
+                    })
+                    .disposed(by: cell.disposeBag)
+                
+                cell.selectButton.rx.tap
+                    .subscribe(onNext: { [weak self] _ in
+                        guard let self = self else { return }
+                        let isSelected = self.viewModel.selectCart(index: index)
+                        cell.selectButton.isSelected = isSelected
+                    })
+                    .disposed(by: cell.disposeBag)
+                
+                cell.stepper.value
+                    .distinctUntilChanged()
+                    .subscribe(onNext: { [weak self] count in
+                        guard let self = self else { return }
+                        if count == self.viewModel.cartRelay.value[index].count { return }
+                        self.viewModel.changeCount(index: index, count: count)
+                    })
+                    .disposed(by: cell.disposeBag)
+                
+                cell.deleteButton.rx.tap
+                    .subscribe(onNext: { [weak self] _ in
+                        self?.viewModel.removeFromCart(index: index)
+                        
+                        self?.tableView.reloadData()
+                    })
+                    .disposed(by: cell.disposeBag)
+                
+                if let store = store, let item = item {
+                    cell.configure(isSelected: isSelected, store: store, item: item, itemCount: itemCount)
+                }
+            }
+            .disposed(by: disposeBag)
         
+        let _ = tableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     private func setup() {
@@ -58,7 +105,7 @@ extension CartViewController {
         let separatorView = UIView()
         separatorView.backgroundColor = .lightGray
         
-        var toolbarStackView = {
+        let toolbarStackView = {
             let stackView = UIStackView(arrangedSubviews: [purchaseButton])
             stackView.backgroundColor = .white
             stackView.axis = .horizontal
@@ -94,62 +141,19 @@ extension CartViewController {
     private func setupNavigtaion() {
         navigationController?.navigationBar.backgroundColor = .clear
         
-    }
-}
-
-// MARK: - TableView DataSource
-extension CartViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.cartModel.value.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CartCell.identifier, for: indexPath) as! CartCell
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: nil)
+        backButton.tintColor = .black
         
-        let cart = viewModel.cartModel.value[indexPath.row]
+        navigationItem.leftBarButtonItem = backButton
         
-        let isSelected = cart.isSelected
-        let item = cart.item
-        let store = cart.store
-        let itemCount = cart.count
+        navigationItem.title = "장바구니"
         
-        viewModel.cartModel
-            .subscribe(onNext: { cartItems in
-                guard indexPath.row < cartItems.count else { return }
-                let isSelected = cartItems[indexPath.row].isSelected
-                cell.selectButton.isSelected = isSelected
-            })
-            .disposed(by: cell.disposeBag)
-        
-        cell.selectButton.rx.tap
+        backButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                let isSelected = self.viewModel.selectCart(index: indexPath.row)
-                cell.selectButton.isSelected = isSelected
+                self?.navigationController?.popViewController(animated: true)
             })
-            .disposed(by: cell.disposeBag)
-        
-        cell.stepper.value
-            .subscribe(onNext: { [weak self] count in
-                guard let self = self else { return }
-                self.viewModel.changeCount(index: indexPath.row, count: count)
-            })
-            .disposed(by: cell.disposeBag)
-        
-        cell.deleteButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.removeFromCart(index: indexPath.row)
-                
-                tableView.reloadData()
-            })
-            .disposed(by: cell.disposeBag)
-        
-        cell.configure(isSelected: isSelected, store: store, item: item, itemCount: itemCount)
-        
-        return cell
+            .disposed(by: disposeBag)
     }
-    
-    
 }
 
 // MARK: - TableView Delegate / Header + Footer
@@ -163,7 +167,7 @@ extension CartViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CartHeaderView.identifier) as! CartHeaderView
         
-        viewModel.cartModel
+        viewModel.cartRelay
             .subscribe(onNext: { items in
                 let isAllSelected = items.allSatisfy { $0.isSelected }
                 headerView.selectButton.isSelected = isAllSelected
@@ -196,10 +200,10 @@ extension CartViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: CartFooterView.identifier) as! CartFooterView
         
-        viewModel.cartModel
+        viewModel.cartRelay
             .map { cart in
                 cart.reduce(0) {
-                    $0 + ($1.isSelected ? $1.item.finalPrice * $1.count : 0)
+                    $0 + ($1.isSelected ? ($1.item?.finalPrice ?? 0) * $1.count : 0)
                 }
             }
             .distinctUntilChanged()

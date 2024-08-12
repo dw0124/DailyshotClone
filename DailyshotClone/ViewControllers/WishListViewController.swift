@@ -25,12 +25,44 @@ class WishListViewController: UIViewController, ViewModelBindableType {
         setupNavigtaion()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    
+        disposeBag = DisposeBag()
+        
+        bindViewModel()
+        
+        viewModel.updateWishList()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        disposeBag = DisposeBag()
+    }
+    
     func bindViewModel() {
         
         viewModel.itemsRelay
             .bind(to: tableView.rx.items) { (tableView, row, item) in
                 let cell = tableView.dequeueReusableCell(withIdentifier: WishListCell.identifier) as! WishListCell
                 cell.configure(item: item)
+                
+                cell.deleteButton.rx.tap
+                    .flatMap { [weak self] _ -> Observable<Bool> in
+                        guard let self = self else { return Observable.just(false) }
+                        let itemId = self.viewModel.itemsRelay.value[row].productId
+                        return UserManager.shared.wishList.removeFromWishList(with: itemId)
+                    }
+                    .subscribe(onNext: { [weak self] _ in
+                        guard let self = self else { return }
+                        var items = self.viewModel.itemsRelay.value
+                        items.remove(at: row)
+                        self.viewModel.itemsRelay.accept(items)
+                        
+                    })
+                    .disposed(by: cell.disposeBag)
+                
                 return cell
             }
             .disposed(by: disposeBag)

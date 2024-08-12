@@ -181,8 +181,6 @@ class ItemDetailStoreCell: UITableViewCell {
     }
     
     func configure(store: Store) {
-        binding()
-        
         self.store = store
         
         storeNameLabel.text = store.name
@@ -195,9 +193,7 @@ class ItemDetailStoreCell: UITableViewCell {
         let marker = NMFMarker()
         marker.position = NMGLatLng(lat: store.lat, lng: store.lng)
         marker.mapView = mapView
-    }
-    
-    func binding() {
+        
         storeNumberButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 if let storeNumber = self?.store.storeNumber {
@@ -208,9 +204,11 @@ class ItemDetailStoreCell: UITableViewCell {
         
         button.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                self?.isOpen == false ? self?.openCell() : self?.closeCell()
-                self?.isOpen.toggle()
-                self?.button.isSelected.toggle()
+                guard let self = self else { return }
+                
+                self.isOpen == false ? self.openCell() : self.closeCell()
+                self.isOpen.toggle()
+                self.button.isSelected.toggle()
             })
             .disposed(by: disposeBag)
     }
@@ -254,8 +252,6 @@ class ItemDetailStoreCell: UITableViewCell {
     }
 
     private func callPhoneNumber(_ phoneNumber: String) {
-        print(#function)
-
         if let url = NSURL(string: "tel://0" + "\(phoneNumber)"),
            UIApplication.shared.canOpenURL(url as URL) {
             UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)

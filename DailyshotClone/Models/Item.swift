@@ -38,6 +38,7 @@ struct DailyshotItem: Codable {
     let discountRate: Int?  // 할인률
     let rating: Double?     // 평점
     let reviewCount: Int?   // 리뷰 수
+    let wishListCount: Int?  // 위시리스트 수
     
     var finalPrice: Int {   // 할인률이 적용된 최종 가격
         if let discountRate = discountRate, discountRate > 0 {

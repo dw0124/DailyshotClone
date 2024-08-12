@@ -21,6 +21,9 @@ class ItemDetailViewController: UIViewController, ViewModelBindableType {
     
     var tableView = UITableView(frame: .zero, style: .grouped)
     var toolbarStackView = UIStackView()
+    var likeButton = UIButton()
+    var presentButton = UIButton()
+    var pickupOrderButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +90,61 @@ extension ItemDetailViewController {
             .disposed(by: disposeBag)
         
         let _ = tableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        
+        likeButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.likeButton.isSelected.toggle()
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.isWishList
+            .subscribe(onNext: {
+                self.likeButton.isSelected = $0
+            })
+            .disposed(by: disposeBag)
+        
+        likeButton.rx.tap
+            .flatMapLatest {
+                if self.likeButton.isSelected {
+                    return self.viewModel.addToWishList()
+                } else {
+                    return self.viewModel.removeFromWishList()
+                }
+            }
+            .subscribe(onNext: { isSelected in
+                print(isSelected)
+            }, onError: { error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.dailyshotItemRelay
+            .subscribe(onNext: { item in
+                let wishListCount = item.wishListCount ?? 0
+                
+                var attString = AttributedString("\(wishListCount)")
+                attString.font = .systemFont(ofSize: 10, weight: .regular)
+                self.likeButton.configuration?.attributedTitle = attString
+            })
+            .disposed(by: disposeBag)
+        
+        pickupOrderButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
+                let store = self.viewModel.storeRelay.value
+                let item = self.viewModel.dailyshotItemRelay.value
+                
+                let viewModel = SelectStoreViewModel(store: store, dailyshotItem: item)
+                var viewController = SelectStoreViewcontroller()
+                viewController.bind(viewModel: viewModel)
+                
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }, onError: { error in
+                print(error.localizedDescription)
+            })
             .disposed(by: disposeBag)
     }
     
@@ -168,7 +226,7 @@ extension ItemDetailViewController {
     }
     
     func setupToolbar() {
-        let likeButton: UIButton = {
+        likeButton = {
             let button = UIButton()
             
             // 버튼 상태에 따라 이미지 설정
@@ -186,12 +244,16 @@ extension ItemDetailViewController {
             configuration.imagePlacement = .top
 
             configuration.baseBackgroundColor = .white
+            
+            configuration.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0)
+            
             button.configuration = configuration
+            
             button.tintColor = .darkGray
+            button.titleLabel?.textAlignment = .center
             return button
         }()
         
-        let presentButton = UIButton()
         presentButton.setImage(UIImage(systemName: "gift"), for: .normal)
         presentButton.setTitle("선물하기", for: .normal)
         presentButton.setTitleColor(.black, for: .normal)
@@ -201,7 +263,6 @@ extension ItemDetailViewController {
         presentButton.tintColor = .orange
         presentButton.addPadding(top: 10, leading: 10, bottom: 10, trailing: 10)
         
-        let pickupOrderButton = UIButton()
         pickupOrderButton.setImage(UIImage(systemName: "figure.walk"), for: .normal)
         pickupOrderButton.setTitle("방문픽업 주문하기", for: .normal)
         pickupOrderButton.setTitleColor(.black, for: .normal)
@@ -226,39 +287,14 @@ extension ItemDetailViewController {
         toolbarStackView.isLayoutMarginsRelativeArrangement = true
         
         likeButton.snp.makeConstraints {
-            $0.width.equalTo(33).priority(.required)
+            $0.width.equalTo(44).priority(.required)
         }
         
         presentButton.snp.makeConstraints {
-            $0.width.equalTo(130).priority(.required)
+            $0.width.lessThanOrEqualTo(130).priority(.low)
         }
         
-        likeButton.rx.tap
-            .subscribe(onNext: { _ in
-                likeButton.isSelected.toggle()
-            })
-            .disposed(by: disposeBag)
-        
-        presentButton.rx.tap
-            .subscribe(onNext: {
-                
-            })
-            .disposed(by: disposeBag)
-        
-        pickupOrderButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                
-                let store = self.viewModel.storeRelay.value
-                let item = self.viewModel.dailyshotItemRelay.value
-                
-                let viewModel = SelectStoreViewModel(store: store, dailyshotItem: item)
-                var viewController = SelectStoreViewcontroller()
-                viewController.bind(viewModel: viewModel)
-                
-                self.navigationController?.pushViewController(viewController, animated: true)
-            })
-            .disposed(by: disposeBag)
+        pickupOrderButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 }
 

@@ -14,51 +14,6 @@ import FirebaseStorage
 
 class WebService {
     
-    static func loadData<T: Codable>(urlStr: String, completion: @escaping (T?) -> Void) {
-        guard let url = URL(string: urlStr) else { fatalError("Invalid URL") }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(nil)
-            } else if let data = data {
-                do {
-                    let result = try JSONDecoder().decode(T.self, from: data)
-                    completion(result)
-                } catch {
-                    print("Failed to decode JSON data: \(error)")
-                    completion(nil)
-                }
-            }
-        }.resume()
-    }
-    
-    static func load<T: Codable>(_ type: [T].Type, from resourceName: String) -> [T]? {
-        // type : 디코딩 할 때 사용되는 모델의 타입
-        // resourceName : json 파일의 이름
-        guard let path = Bundle.main.path(forResource: resourceName, ofType: "json") else {
-            return nil
-        }
-        // 확장자가 json인 파일의 경로를 가져오는 부분
-        guard let jsonString = try? String(contentsOfFile: path) else {
-            return nil
-        }
-        
-        let decoder = JSONDecoder()
-        let data = jsonString.data(using: .utf8)
-        
-        guard let data = data else { return nil }
-        
-        var items: [T]? = nil
-        do {
-            items = try decoder.decode(type, from: data)
-        } catch {
-            print(error)
-        }
-        
-        return items == nil ? nil : items
-    }
-    
     static func fetchItems() -> Observable<[DailyshotItem]> {
         return Observable.create { observer in
             
@@ -96,6 +51,43 @@ class WebService {
             }
         }
     }
+    
+    static func fetchItemWithId(with id: String) -> Observable<DailyshotItem?> {
+        return Observable.create { observer in
+            
+            let databaseRef = Database.database().reference()
+            let itemRef = databaseRef.child("items").child(id)
+            
+            itemRef.getData { error, snapshot in
+                if let error = error {
+                    print("데이터 읽기 오류: \(error.localizedDescription)")
+                    observer.onError(error)
+                    return
+                }
+                
+                guard let itemData = snapshot?.value as? [String: Any] else {
+                    print("데이터 형식 오류")
+                    observer.onNext(nil)
+                    observer.onCompleted()
+                    return
+                }
+                
+                do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: itemData, options: [])
+                    let item = try JSONDecoder().decode(DailyshotItem.self, from: jsonData)
+                    observer.onNext(item)
+                } catch let error {
+                    print("fetchItemWithId - 데이터 디코딩 오류: \(error.localizedDescription)")
+                    observer.onError(error)
+                }
+                
+                observer.onCompleted()
+            }
+            
+            return Disposables.create()
+        }
+    }
+
 }
 
 
@@ -103,7 +95,7 @@ class ImageCacheManager {
     
     static let shared = ImageCacheManager()
     
-    private let cache = NSCache<NSString, UIImage>()
+    var cache = NSCache<NSString, UIImage>()
     
     private init() {}
     

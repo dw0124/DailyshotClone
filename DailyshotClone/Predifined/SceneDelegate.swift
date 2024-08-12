@@ -7,7 +7,7 @@
 
 import UIKit
 import FirebaseCore
-
+import FirebaseDatabase
 import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -26,6 +26,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 파이어베이스
         FirebaseApp.configure()
+        
+        // UserManager 싱글톤 초기화
+        _ = UserManager.shared
         
         let window = UIWindow(windowScene: windowScene)
         

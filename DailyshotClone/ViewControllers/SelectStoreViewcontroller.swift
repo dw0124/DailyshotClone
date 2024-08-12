@@ -27,6 +27,8 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
     let storeAddressLabel = UILabel()
     let pickupDay = UILabel()
     let priceLabel = UILabel()
+    let cartButton = UIButton()
+    let purchaseButton = UIButton()
     let stepper = CustomStepper()
     
     override func viewDidLoad() {
@@ -72,6 +74,12 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
         viewModel.totalPrice
             .map { NumberFormatter.setDecimal($0) + "원" }
             .bind(to: priceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        cartButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.saveToCart()
+            })
             .disposed(by: disposeBag)
         
         stepper.value
@@ -177,32 +185,23 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
         let countStackView = UIStackView(arrangedSubviews: [count, UIView(), stepper])
         countStackView.axis = .horizontal
         countStackView.spacing = 8
+    
+        cartButton.titleLabel?.textAlignment = .center
+        cartButton.setTitle("장바구니 담기", for: .normal)
+        cartButton.tintColor = .orange
+        cartButton.backgroundColor = #colorLiteral(red: 0.9920747876, green: 0.3846439123, blue: 0.003998160828, alpha: 0.1021833609)
+        cartButton.layer.cornerRadius = 10
+        cartButton.addPadding(top: 10, leading: 10, bottom: 10, trailing: 10)
         
-        // 장바구니와 구매 버튼 생성
-        let cartButton: UIButton = {
-            let button = UIButton()
-            button.titleLabel?.textAlignment = .center
-            button.setTitle("장바구니 담기", for: .normal)
-            button.tintColor = .orange
-            button.backgroundColor = #colorLiteral(red: 0.9920747876, green: 0.3846439123, blue: 0.003998160828, alpha: 0.1021833609)
-            button.layer.cornerRadius = 10
-            button.addPadding(top: 10, leading: 10, bottom: 10, trailing: 10)
-            return button
-        }()
-        
-        let purchaseButton: UIButton = {
-            let button = UIButton()
-            button.titleLabel?.textAlignment = .center
-            button.setTitleColor(.black, for: .normal)
-            button.setTitle("바로 구매하기", for: .normal)
-            button.backgroundColor = .orange
-            button.setTitleColor(.white, for: .normal)
-            button.tintColor = .white
-            button.layer.cornerRadius = 10
-            button.addPadding(top: 10, leading: 10, bottom: 10, trailing: 10)
-            return button
-        }()
-        
+        purchaseButton.titleLabel?.textAlignment = .center
+        purchaseButton.setTitleColor(.black, for: .normal)
+        purchaseButton.setTitle("바로 구매하기", for: .normal)
+        purchaseButton.backgroundColor = .orange
+        purchaseButton.setTitleColor(.white, for: .normal)
+        purchaseButton.tintColor = .white
+        purchaseButton.layer.cornerRadius = 10
+        purchaseButton.addPadding(top: 10, leading: 10, bottom: 10, trailing: 10)
+ 
         let buttonStackView = UIStackView(arrangedSubviews: [cartButton, purchaseButton])
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = 8

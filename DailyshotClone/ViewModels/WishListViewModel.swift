@@ -6,21 +6,33 @@
 //
 
 import Foundation
+import RxSwift
 import RxRelay
 
 class WishListViewModel {
     
+    var disposeBag = DisposeBag()
+    
     var itemsRelay = BehaviorRelay<[DailyshotItem]>(value: [])
     
     init() {
-        let item = DailyshotItem(productId: "001", itemCategory: .whisky, name: "오드 괴즈 분", price: 39000, discountRate: 30, rating: 4.0, reviewCount: 12, specialOffer: true, recommended: true, thumbnailImageURL: "gs://dailyshotclone.appspot.com/items/ddbKingSue.png", productImageURL: "gs://dailyshotclone.appspot.com/items/ddbKingSue.png", detailImageURL: "gs://dailyshotclone.appspot.com/items/ddbKingSue.png", tastingNotes: nil, information: nil, productDescription: "")
         
-        let item2 = DailyshotItem(productId: "002", itemCategory: .whisky, name: "기네스", price: 4500, discountRate: 0, rating: 0, reviewCount: 0, specialOffer: true, recommended: true, thumbnailImageURL: "gs://dailyshotclone.appspot.com/items/ddbKingSue.png", productImageURL: "", detailImageURL: "", tastingNotes: nil, information: nil, productDescription: "")
-        
-        let item3 = DailyshotItem(productId: "002", itemCategory: .whisky, name: "하이네켄", price: 3000, discountRate: 0, rating: 0, reviewCount: 0, specialOffer: true, recommended: true, thumbnailImageURL: "gs://dailyshotclone.appspot.com/items/ddbKingSue.png", productImageURL: "", detailImageURL: "", tastingNotes: nil, information: nil, productDescription: "")
-        
-        itemsRelay.accept([item, item2, item3])
     }
     
-    
+    func updateWishList() {
+        let wishListItems = UserManager.shared.wishList.items
+        
+        let observables = wishListItems.map { itemId in
+            WebService.fetchItemWithId(with: itemId)
+        }
+        
+        if !observables.isEmpty {
+            Observable.zip(observables)
+                .subscribe(onNext: { [weak self] items in
+                    let nonNilItems = items.compactMap { $0 }
+                    self?.itemsRelay.accept(nonNilItems)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
 }
