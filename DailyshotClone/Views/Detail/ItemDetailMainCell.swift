@@ -160,18 +160,21 @@ class ItemDetailImageCell: UITableViewCell {
     // configure
     func configure(_ item: DailyshotItem) {
         nameLabel.text = item.name
+        
         if let rating = item.rating {
-            ratingStarView.rating = 4.4
+            ratingStarView.rating = rating
             ratingLabel.text = "\(rating)"
-            reviewCountButton.setTitle("\(item.reviewCount ?? 0)개의 리뷰", for: .normal)
         } else {
-            labelStackView.removeArrangedSubview(ratingStackView)
-            labelStackView.removeArrangedSubview(separatorLabel)
-            labelStackView.removeArrangedSubview(reviewCountButton)
-            
-            ratingStackView.removeFromSuperview()
-            separatorLabel.removeFromSuperview()
-            reviewCountButton.removeFromSuperview()
+            ratingStackView.isHidden = true
+        }
+        
+        if let reviewCount = item.reviewCount {
+            let title = NSAttributedString(string: "\(reviewCount)개의 리뷰")
+            reviewCountButton.setAttributedTitle(title, for: .normal)
+            reviewCountButton.setUnderline()
+        } else {
+            separatorLabel.isHidden = true
+            reviewCountButton.isHidden = true
         }
         
         if let discountRate = item.discountRate {
@@ -179,7 +182,6 @@ class ItemDetailImageCell: UITableViewCell {
                 .priceText(NumberFormatter.setDecimal(item.finalPrice) + "원", fontSize: 20)
                 .discountText("  \(discountRate)%  ", fontSize: 16)
                 .beforeDiscountText("\(NumberFormatter.setDecimal(item.price))", fontSize: 16)
-            
         } else {
             priceLabel.text = NumberFormatter.setDecimal(item.finalPrice) + "원"
         }
