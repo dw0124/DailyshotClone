@@ -20,7 +20,7 @@ class WishListViewModel {
     }
     
     func updateWishList() {
-        let wishListItems = UserManager.shared.wishList.items
+        let wishListItems = WishListManager.shared.items
         
         let observables = wishListItems.map { itemId in
             WebService.fetchItemWithId(with: itemId)

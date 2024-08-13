@@ -45,17 +45,17 @@ class ItemDetailViewModel {
     
     func addToWishList() -> Observable<Bool> {
         let itemId = self.dailyshotItemRelay.value.productId
-        return UserManager.shared.wishList.addWishList(with: itemId)
+        return WishListManager.shared.addWishList(with: itemId)
     }
     
     func removeFromWishList() -> Observable<Bool> {
         let itemId = self.dailyshotItemRelay.value.productId
-        return UserManager.shared.wishList.removeFromWishList(with: itemId)
+        return WishListManager.shared.removeFromWishList(with: itemId)
     }
     
     private func isContainWishList() {
         let itemId = dailyshotItemRelay.value.productId
-        let isContain = UserManager.shared.wishList.items.contains(itemId)
+        let isContain = WishListManager.shared.items.contains(itemId)
         print(isContain)
         isWishList.accept(isContain)
     }

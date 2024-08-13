@@ -52,7 +52,7 @@ class WishListViewController: UIViewController, ViewModelBindableType {
                     .flatMap { [weak self] _ -> Observable<Bool> in
                         guard let self = self else { return Observable.just(false) }
                         let itemId = self.viewModel.itemsRelay.value[row].productId
-                        return UserManager.shared.wishList.removeFromWishList(with: itemId)
+                        return WishListManager.shared.removeFromWishList(with: itemId)
                     }
                     .subscribe(onNext: { [weak self] _ in
                         guard let self = self else { return }
