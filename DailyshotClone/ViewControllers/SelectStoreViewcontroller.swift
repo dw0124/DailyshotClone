@@ -157,7 +157,7 @@ class SelectStoreViewcontroller: UIViewController, ViewModelBindableType {
         pickupDay.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         pickupDay.numberOfLines = 1
         pickupDay.textAlignment = .left
-        pickupDay.text = "?/?(요일) 준비완료 예정"
+        pickupDay.text = "8/13(화요일) 준비완료 예정"
         
         priceLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         priceLabel.numberOfLines = 1

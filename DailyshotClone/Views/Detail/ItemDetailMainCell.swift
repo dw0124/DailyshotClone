@@ -77,9 +77,9 @@ class ItemDetailImageCell: UITableViewCell {
         let button = UIButton()
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
         button.titleLabel?.textAlignment = .left
-        button.setTitleColor(.black, for: .normal)
-        button.setTitle("0개의 리뷰", for: .normal)
-        button.setUnderline()
+//        button.setTitleColor(.black, for: .normal)
+//        button.setTitle("0개의 리뷰", for: .normal)
+//        button.setUnderline()
         return button
     }()
     
@@ -169,8 +169,8 @@ class ItemDetailImageCell: UITableViewCell {
         }
         
         if let reviewCount = item.reviewCount {
-            let title = NSAttributedString(string: "\(reviewCount)개의 리뷰")
-            reviewCountButton.setAttributedTitle(title, for: .normal)
+            let title = "\(reviewCount)개의 리뷰"
+            reviewCountButton.setTitle(title, for: .normal)
             reviewCountButton.setUnderline()
         } else {
             separatorLabel.isHidden = true

@@ -170,14 +170,15 @@ extension ItemDetailViewController {
         }
         
         separatorView.snp.makeConstraints {
-            $0.top.equalTo(toolbarStackView.snp.top)
-            $0.leading.trailing.equalTo(toolbarStackView)
-            $0.height.equalTo(1) // 1pt height for the separator line
+            $0.bottom.equalTo(toolbarStackView.snp.top)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(0.3)
         }
+        
         
         tableView.snp.makeConstraints {
             $0.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
-            $0.bottom.equalTo(toolbarStackView.snp.top)
+            $0.bottom.equalTo(separatorView.snp.top)
         }
     }
     
