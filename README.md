@@ -98,6 +98,15 @@
 
 </details>
 
+## 주요 기능
+
 ## 화면 구성
 
-## 주요 기능
+### 홈 화면
+
+<p align="center"> 
+  <img src="https://github.com/user-attachments/assets/fc3b80ce-59e7-4c03-8195-1362f6679b75" width="24%" alt="홈 화면">
+  <img src="https://github.com/user-attachments/assets/b7d95160-f7df-4a88-9c5f-09971a7df0e1" width="24%" alt="small"> 
+  <img src="https://github.com/user-attachments/assets/3554f131-c879-4a0b-934f-1c2d81743b8b" width="24%" alt="medium"> 
+  <img src="https://github.com/user-attachments/assets/d76b7521-1093-422c-82c0-03ca526b0c1a" width="24%" alt="large"> 
+</p>
