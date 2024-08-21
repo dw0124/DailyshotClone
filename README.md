@@ -2,9 +2,11 @@
 
 ## 프로젝트 정보
 
-**해당 프로젝트는 데일리샷의 클론 프로젝트입니다.**
+**해당 프로젝트는 데일리샷의 클론 프로젝트입니다.** 데일리샷은 다양한 주류를 모바일에서 쉽게 주문할 수 있는 앱입니다.
 
-기술 스택: iOS, Swift, RxSwift, MVVM, SnapKit, Firebase, Naver Maps
+이 클론 프로젝트는 원본 앱의 주요 기능을 재현하고, MVVM과 RxSwift를 사용하여 반응형 프로그래밍 패턴을 적용하였습니다.
+
+**기술 스택: iOS, Swift, RxSwift, MVVM, SnapKit, Firebase, Naver Maps**
 
 <details>
   <summary>프로젝트 구조</summary>
