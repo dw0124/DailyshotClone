@@ -70,7 +70,7 @@ extension ItemDetailViewController {
                     return cell
                 case .description(let dailyshotItem):
                     let cell = tableView.dequeueReusableCell(withIdentifier: ItemDetailDescriptionCell.identifier, for: indexPath) as! ItemDetailDescriptionCell
-                    cell.configure(dailyshotItem)
+                    cell.configure(dailyshotItem, tableView: tableView)
                     return cell
                 case .tastingNotes(let tastingNotes):
                     let cell = tableView.dequeueReusableCell(withIdentifier: ItemDetailTastingNotesCell.identifier, for: indexPath) as! ItemDetailTastingNotesCell

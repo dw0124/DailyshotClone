@@ -8,14 +8,18 @@
 import Foundation
 import UIKit
 import SnapKit
+import RxSwift
 
 class ItemDetailDescriptionCell: UITableViewCell {
 
     static let identifier = "ItemDetailDescriptionCell"
     
+    var disposeBag = DisposeBag()
+    
     let firstImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .green
+        imageView.backgroundColor = .systemGray
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -24,7 +28,7 @@ class ItemDetailDescriptionCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         label.numberOfLines = 0
         label.textAlignment = .left
-        label.text = "소제목1"
+        label.text = ""
         return label
     }()
     
@@ -33,7 +37,7 @@ class ItemDetailDescriptionCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         label.textAlignment = .left
-        label.text = "내용1"
+        label.text = ""
         label.setLineSpacing(spacing: 8)
         return label
     }()    
@@ -49,7 +53,7 @@ class ItemDetailDescriptionCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.numberOfLines = 0
         label.textAlignment = .left
-        label.text = "소제목2"
+        label.text = ""
         return label
     }()
     
@@ -100,6 +104,8 @@ class ItemDetailDescriptionCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
     }
     
     // setup UI + Layout
@@ -109,22 +115,42 @@ class ItemDetailDescriptionCell: UITableViewCell {
         firstLabelStackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         firstLabelStackView.isLayoutMarginsRelativeArrangement = true
         
-        firstImageView.snp.makeConstraints {
-            $0.width.equalToSuperview()
-            $0.height.equalTo(250)
-        }
-        
-        secondImageView.snp.makeConstraints {
-            $0.height.equalTo(250)
-        }
-        
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        firstImageView.snp.makeConstraints {
+            $0.height.equalTo(50).priority(999)
+        }
     }
     
-    func configure(_ item: DailyshotItem) {
-        firstDescriptionLabel.text = item.productDescription
+    func configure(_ item: DailyshotItem, tableView: UITableView) {
+        firstDescriptionLabel.text = item.productDescription.replacingOccurrences(of: "\\n", with: "\n")
+        
+        let imageURLStr = item.detailImageURL
+        ImageCacheManager.shared.loadImageFromStorage(storagePath: imageURLStr)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] image in
+                guard let self = self else { return }
+                
+                if let image = image {
+                    firstImageView.image = image
+                    
+                    let imageWidth = image.size.width
+                    let imageHeight = image.size.height
+                    let imageAspectRatio = imageWidth / imageHeight
+                    
+                    let screenWidth = UIScreen.main.bounds.width
+                    let imageViewHeight = screenWidth / imageAspectRatio
+                    
+                    firstImageView.snp.remakeConstraints {
+                        $0.height.equalTo(imageViewHeight).priority(999)
+                    }
+                    
+                    invalidateIntrinsicContentSize()
+                }
+            })
+            .disposed(by: disposeBag)
     }
-}
 
+}
