@@ -30,6 +30,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // UserManager 싱글톤 초기화
         _ = UserManager.shared
         
+        // WishLIstManager 초기화
+        _ = WishListManager.shared
+        
         let window = UIWindow(windowScene: windowScene)
         
         if let user = Auth.auth().currentUser {
