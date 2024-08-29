@@ -70,13 +70,12 @@ class CartHeaderView: UITableViewHeaderFooterView {
     }
     
     private func setup() {
-        stackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        stackView.isLayoutMarginsRelativeArrangement = true
         
         contentView.addSubview(stackView)
         
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(10)
         }
         
     }

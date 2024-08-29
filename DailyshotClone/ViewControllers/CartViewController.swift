@@ -161,7 +161,7 @@ extension CartViewController: UITableViewDelegate {
     
     // MARK: TableView Header
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return tableView.estimatedSectionHeaderHeight
+        return 44
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -194,7 +194,7 @@ extension CartViewController: UITableViewDelegate {
     
     // MARK: TableView Footer
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return tableView.estimatedSectionFooterHeight
+        return 44
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
